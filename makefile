@@ -6,4 +6,5 @@ run2.address:
 run2.maxElement:
 	gcc -std=c17 -o build/2.maxElement 2.maxElement.c && ./build/2.maxElement
 run2.massiveDu:
-	gcc -std=c17 -o build/2.massiveDu 2.massiveDu.c && ./build/2.massiveDu	
+	gcc -std=c17 -o build/2.massiveDu 2.massiveDu.c && ./build/2.massiveDu
+run3.d:
