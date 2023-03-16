@@ -33,7 +33,7 @@ int main(void)
 
 // сопоставление начального адреса массива, все одинаково
     printf("%p \n", newElem);
-    printf("%p \n", newElem[0]);
+    printf("%p \n", &newElem[0]);
     printf("%p \n", &newElem[0][0]);
 
     return 0;

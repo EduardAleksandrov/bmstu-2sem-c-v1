@@ -7,4 +7,5 @@ run2.maxElement:
 	gcc -std=c17 -o build/2.maxElement 2.maxElement.c && ./build/2.maxElement
 run2.massiveDu:
 	gcc -std=c17 -o build/2.massiveDu 2.massiveDu.c && ./build/2.massiveDu
-run3.d:
+run2.maxElSer:
+	gcc -std=c17 -o build/2.maxElSer 2.maxElSer.c && ./build/2.maxElSer
