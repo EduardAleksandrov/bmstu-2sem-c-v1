@@ -9,3 +9,5 @@ run2.massiveDu:
 	gcc -std=c17 -o build/2.massiveDu 2.massiveDu.c && ./build/2.massiveDu
 run2.maxElSer:
 	gcc -std=c17 -o build/2.maxElSer 2.maxElSer.c && ./build/2.maxElSer
+run3.struct:
+	gcc -std=c17 -o build/3.struct 3.struct.c && ./build/3.struct
