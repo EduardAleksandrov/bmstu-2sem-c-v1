@@ -11,3 +11,8 @@ run2.maxElSer:
 	gcc -std=c17 -o build/2.maxElSer 2.maxElSer.c && ./build/2.maxElSer
 run3.struct:
 	gcc -std=c17 -o build/3.struct 3.struct.c && ./build/3.struct
+run3.pthread:
+	gcc -std=c17 -o build/3.pthread 3.pthread.c -lpthread && ./build/3.pthread
+
+run3.io-operations:
+	gcc -std=c17 -o build/3.io-operations 3.io-operations.c && ./build/3.io-operations
