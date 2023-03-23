@@ -1,3 +1,4 @@
+// task: поиск минимального и максимального элемента в массиве
 #include <stdio.h>
 
 int max(short int*, short int);
@@ -26,7 +27,7 @@ int main(void)
 
 int max(short int *y, short int arrLength)
 {
-    int z = 0;
+    int z = *y;
     for(int i = 0; i < arrLength; i++)
     {
         if(z<*(y+i)) z=*(y+i);
@@ -36,7 +37,7 @@ int max(short int *y, short int arrLength)
 
 int min(short int *y, short int arrLength)
 {
-    int z = 0;
+    int z = *y;
     for(int i = 0; i < arrLength; i++)
     {
         if(z>*(y+i)) z=*(y+i);

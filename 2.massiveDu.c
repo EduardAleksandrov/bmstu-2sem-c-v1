@@ -1,3 +1,4 @@
+// task: замена элементов строку на столбец в двумерном массиве
 #include <stdio.h>
 
 void printArray(unsigned short int*, unsigned short int, unsigned short int);
