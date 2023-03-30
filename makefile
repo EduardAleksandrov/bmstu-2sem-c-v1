@@ -16,3 +16,9 @@ run3.pthread:
 
 run3.io-operations:
 	gcc -std=c17 -o build/3.io-operations 3.io-operations.c && ./build/3.io-operations
+
+run4.fileinput:
+	gcc -std=c17 -o build/4.fileinput 4.fileinput.c && ./build/4.fileinput ./4.data.txt
+
+run.bmstu0301.1:
+	gcc -std=c17 ./b0301/1.jsontest.c -ljson-c -o build/1.jsontest  && ./build/1.jsontest 
