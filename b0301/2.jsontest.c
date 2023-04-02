@@ -1,8 +1,8 @@
 #include <stdio.h>
 #include <json-c/json.h>
 
-#define FILE_PATH_SOURCE "./b0301/test.json"
-#define FILE_PATH_TARGET "./b0301/wtest.json"
+#define FILE_PATH_SOURCE "./test.json"
+#define FILE_PATH_TARGET "./wtest.json"
 
 int64_t getFileSize(const char*);
 
@@ -13,7 +13,7 @@ int main(int argc, char *argv[])
     // char buffer[file_size];
     // char *x = "{\"name\": \"Alice\", \"age\": 30, \"friends\": [\"Paula\", \"Cindy\", \"Dorothy\"]}";
     char *buffer = malloc(file_size);
-    printf("%s \n", buffer);
+    // printf("%s \n", buffer);
 // ---
 
     FILE *fp;
@@ -39,7 +39,7 @@ int main(int argc, char *argv[])
 
     parsed_json = json_tokener_parse(buffer);
     // печать всего файла
-    // printf("%s", json_object_to_json_string_ext(parsed_json, JSON_C_TO_STRING_SPACED));
+    printf("%s", json_object_to_json_string_ext(parsed_json, JSON_C_TO_STRING_SPACED));
     
     
     //char *t = (*parsed_json).name;
