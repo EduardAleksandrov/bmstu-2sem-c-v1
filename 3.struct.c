@@ -78,10 +78,14 @@ int main(void)
 // размер функции
     printf("%ld \n", sizeof(point));
 
+// вызов функции в if
+    int n;
+    if ((n = point(5)) == 1) printf("Функция сработала n = %d\n", n);
     return 0;
 }   
 
 int point(int p)
 {
-    printf("%p", &p);
+    printf("%p \t", &p);
+    return 1;
 }

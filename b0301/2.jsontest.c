@@ -31,7 +31,7 @@ int main(int argc, char *argv[])
         printf("fopen opened\n");
     }
 
-    fread(buffer, 1, file_size, fp);
+    fread(buffer, file_size, 1, fp);
     fclose(fp);
 // ---
 
@@ -53,7 +53,7 @@ int main(int argc, char *argv[])
 
 // from buffer to file
     fp = fopen(FILE_PATH_TARGET, "w");
-    fwrite(buffer, 1, file_size, fp);
+    fwrite(buffer, file_size, 1, fp);
     fclose(fp);
 
     free(buffer);

@@ -22,3 +22,6 @@ run4.fileinput:
 
 run.bmstu0301.1:
 	gcc -std=c17 ./b0301/1.jsontest.c -ljson-c -o build/1.jsontest  && ./build/1.jsontest 
+
+run0.factorial:
+	gcc -std=c17 ./0.std.c ./0.factorial.c -o build/0.factorial  && ./build/0.factorial 
