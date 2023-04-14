@@ -25,3 +25,9 @@ run.bmstu0301.1:
 
 run0.factorial:
 	gcc -std=c17 ./0.std.c ./0.factorial.c -o build/0.factorial  && ./build/0.factorial 
+
+run5.restrict:
+	gcc -std=c17 ./5.restrict.c  -o build/5.restrict -g && ./build/5.restrict 
+
+run6.maxmin:
+	gcc -std=c17 ./6.maxmin.c  -o build/6.maxmin -g && ./build/6.maxmin 
