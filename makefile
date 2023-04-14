@@ -28,6 +28,10 @@ run0.factorial:
 
 run5.restrict:
 	gcc -std=c17 ./5.restrict.c  -o build/5.restrict -g && ./build/5.restrict 
-
+# -g подключаем gdb
 run6.maxmin:
-	gcc -std=c17 ./6.maxmin.c  -o build/6.maxmin -g && ./build/6.maxmin 
+	gcc -std=c17 \
+		./6.maxmin.c \
+		-o build/6.maxmin \
+		-g \
+		&& ./build/6.maxmin 

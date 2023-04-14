@@ -8,7 +8,7 @@ int findsumcolumns(int*, int, int, int*);
 
 int main(void) 
 {
-    int elements[4][3] = { {1, 2, 3}, {4, 5, 6}, {7, 8, 9}, {9, 9, 9} };
+    int elements[4][3] = { {1, 2, 3}, {4, 5, 6}, {7, 8, 9}, {9, -9, -9} };
 
     int rows = sizeof( elements ) / sizeof( elements[0]);
     int columns = sizeof( elements[0] ) / sizeof( elements[0][0]);
@@ -49,13 +49,13 @@ int findsumcolumns(int *elements, int rows, int columns, int *sumcolumn)
 {
     for(int j = 0; j < columns; j++)
     {   
-        int sumrows = 0;
+        int sumcolumns = 0;
         for(int i = 0; i < rows; i++)
         {
-            sumrows += *(elements + j*rows + i);
+            sumcolumns += *(elements + i*columns + j);
         }
         // printf("\n");
-        sumcolumn[j] = sumrows;
+        sumcolumn[j] = sumcolumns;
     }
 }
 
