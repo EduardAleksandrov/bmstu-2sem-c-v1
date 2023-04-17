@@ -23,12 +23,49 @@ run4.fileinput:
 run.bmstu0301.1:
 	gcc -std=c17 ./b0301/1.jsontest.c -ljson-c -o build/1.jsontest  && ./build/1.jsontest 
 
+
+
+
 run0.factorial:
 	gcc -std=c17 ./0.std.c ./0.factorial.c -o build/0.factorial  && ./build/0.factorial 
+# Промежуточная компиляция через объектные файлы
+run0.factorial.one:
+	gcc -std=c17 -c ./0.std.c -o ./build/0.std.o
+run0.factorial.two:
+	gcc -std=c17 -c ./0.factorial.c -o ./build/0.factorial.o
+run0.factorial.three:
+	gcc ./build/0.std.o ./build/0.factorial.o -o ./build/0.factor
+
+
 
 run5.restrict:
 	gcc -std=c17 ./5.restrict.c  -o build/5.restrict -g && ./build/5.restrict 
 # -g подключаем gdb
+# препроцессор
+run5.restrict.one:
+	gcc -E ./5.restrict.c -o ./build/5.restrictone.i
+# компилятор - в ассемблер
+run5.restrict.two:
+	gcc -std=c17 -S ./build/5.restrictone.i -o ./build/5.restricttwo.s
+# файл.с в объектный код
+run5.restrict.three:
+	gcc -c ./5.restrict.c -o ./build/5.restrictthree.o
+# объектный код в исполняемый
+run5.restrict.four:
+	gcc ./build/5.restrictthree.o -o ./build/5.restrict
+
+
+run5.restrict.six:
+# verbose - расписывает этапы компиляции, + file no-pie executable file
+	gcc -std=c17 ./5.restrict.c -no-pie -v -o ./build/5.restrict 
+
+run5.restrict.seven:
+# запуск
+	./build/5.restrict 
+
+
+
+
 run6.maxmin:
 	gcc -std=c17 \
 		./6.maxmin.c \

@@ -54,14 +54,14 @@ int main(void)
     mpoint->x = 6;
     printf("%d \n", mpoint->x);
 // арифметика указателей
-    int x[] = {1,2,3,4};
-    int *p = x;
-    p = p + 2;
+    int xxx[] = {1,2,3,4};
+    int *p1 = xxx;
+    p1 = p1 + 2;
     printf("%d \n", *p);
 
-    int *pp = p;
-    pp = pp + 1;
-    printf("%d \n", *pp);
+    int *pp1 = p1;
+    pp1 = pp1 + 1;
+    printf("%d \n", *pp1);
 
 
 
