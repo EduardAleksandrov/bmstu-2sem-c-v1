@@ -59,23 +59,23 @@ int findsumcolumns(int *elements, int rows, int columns, int *sumcolumn)
     }
 }
 
-int maxmin(int *sumrow, int sumrowsize)
+int maxmin(int *sumrowc, int sumsize)
 {
-    int indexmax = sumrow[0];
-    int indexmin = sumrow[0];
-    int minrow = 1;
-    int maxrow = 1;
+    int indexmax = sumrowc[0];
+    int indexmin = sumrowc[0];
+    int minrowc = 1;
+    int maxrowc = 1;
 
-    for(int i = 0; i< sumrowsize; i++) {
-        if(indexmax < sumrow[i]) {
-            indexmax = sumrow[i];
-            maxrow = i+1;
+    for(int i = 0; i< sumsize; i++) {
+        if(indexmax < sumrowc[i]) {
+            indexmax = sumrowc[i];
+            maxrowc = i+1;
         }
-        if(indexmin > sumrow[i]) {
-            indexmin = sumrow[i];
-            minrow = i+1;
+        if(indexmin > sumrowc[i]) {
+            indexmin = sumrowc[i];
+            minrowc = i+1;
         }
     }
-    printf("max: %d, min: %d \n", maxrow, minrow);
+    printf("max: %d, min: %d \n", maxrowc, minrowc);
 
 }
