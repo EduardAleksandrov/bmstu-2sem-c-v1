@@ -72,3 +72,6 @@ run6.maxmin:
 		-o build/6.maxmin \
 		-g \
 		&& ./build/6.maxmin 
+
+run6.sort:
+	gcc -std=c17 ./6.sort.c -o build/6.sort -g && ./build/6.sort 
