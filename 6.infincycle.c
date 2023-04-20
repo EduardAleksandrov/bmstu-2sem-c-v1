@@ -36,7 +36,7 @@ int main(void)
     for(;;)
     {
         count++;
-        ;scanf(" %c", &num); //нужен пробел, чтобы не считывался символ enter "\n"
+        scanf(" %c", &num); //нужен пробел, чтобы не считывался символ enter "\n"
         x = (char *) realloc(x, sizeof(char)*(count+1));
         if (x == NULL) {
             printf("Память не выделена заново, ошибка");
