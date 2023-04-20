@@ -30,6 +30,7 @@ int main(void)
     char *x = (char *) malloc(sizeof(char));
     if (x == NULL) {
         printf("Память не выделена, ошибка");
+        exit(1);
     }
     char num;
     int count = 0;
@@ -40,6 +41,7 @@ int main(void)
         x = (char *) realloc(x, sizeof(char)*(count+1));
         if (x == NULL) {
             printf("Память не выделена заново, ошибка");
+            exit(1);
         }
         *(x + count - 1) = num;
         *(x + count) = '\0';
