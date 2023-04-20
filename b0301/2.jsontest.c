@@ -12,7 +12,7 @@ int main(int argc, char *argv[])
     int64_t file_size = getFileSize(FILE_PATH_SOURCE);
     // char buffer[file_size];
     // char *x = "{\"name\": \"Alice\", \"age\": 30, \"friends\": [\"Paula\", \"Cindy\", \"Dorothy\"]}";
-    char *buffer = malloc(file_size);
+    char *buffer = (char *) malloc(file_size);
     // printf("%s \n", buffer);
 // ---
 
@@ -31,7 +31,7 @@ int main(int argc, char *argv[])
         printf("fopen opened\n");
     }
 
-    fread(buffer, file_size, 1, fp);
+    fread(buffer, file_size, 1, fp); // file_size количество элементов по 1 байту
     fclose(fp);
 // ---
 

@@ -28,6 +28,9 @@ int main(void)
 
 // считование символов
     char *x = (char *) malloc(sizeof(char));
+    if (x == NULL) {
+        printf("Память не выделена, ошибка");
+    }
     char num;
     int count = 0;
     for(;;)
@@ -35,6 +38,9 @@ int main(void)
         count++;
         scanf(" %c", &num); //нужен пробел, чтобы не считывался символ enter "\n"
         x = (char *) realloc(x, sizeof(char)*count);
+        if (x == NULL) {
+            printf("Память не выделена заново, ошибка");
+        }
         *(x + count - 1) = num;
         //*(x+count) = '\0';
 
