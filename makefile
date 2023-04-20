@@ -75,3 +75,6 @@ run6.maxmin:
 
 run6.sort:
 	gcc -std=c17 ./6.sort.c -o build/6.sort -g && ./build/6.sort 
+
+run6.infincycle:
+	gcc -std=c17 ./6.infincycle.c -o build/6.infincycle -g && ./build/6.infincycle 
