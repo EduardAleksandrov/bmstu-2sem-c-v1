@@ -1,5 +1,6 @@
-// сортировка линейная и пузырьком
+// сортировка линейная и пузырьком, сортировка строк
 #include <stdio.h>
+#include <string.h>
 
 int main(void) 
 {
@@ -44,8 +45,30 @@ int main(void)
         printf("%d \t", x[i]);
     }
 
+    printf("\n");
 
 
+// сортировка строк линейная
+    char *str[4] = {"peter", "alan", "mike", "pete"};
+
+    for(int i = 0; i < 3; i++)
+    {
+        for(int j = i + 1; j < 4; j++)
+        {
+            if(strcmp(str[i], str[j]) > 0)
+            {
+                char *d = str[i];
+                str[i] = str[j];
+                str[j] = d;
+            }
+        }
+    }
+    for(int i = 0; i < 4; i++)
+    {
+        printf("%s \n", str[i]);
+    }
+
+   
 
     return 0;
 }
