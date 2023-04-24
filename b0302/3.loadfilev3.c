@@ -10,11 +10,11 @@
 
 struct person
 {
-    char id[50];
+    int id;
     char name[50];
-    char age[50];
+    int age;
     char address[50];
-    char zipcode[50];
+    long int zipcode;
 };
 
 long int getFileLineSize(char*);
@@ -51,11 +51,11 @@ int main(int argc, char *argv[])
         char *field = strtok(buff, ",");
         while(field)
         {
-            if(field_count == 0) strcpy(persons[i].id, field);
+            if(field_count == 0) persons[i].id = strtol(field, NULL, 10);
             if(field_count == 1) strcpy(persons[i].name, field);
-            if(field_count == 2) strcpy(persons[i].age, field);
+            if(field_count == 2) persons[i].age = strtol(field, NULL, 10);
             if(field_count == 3) strcpy(persons[i].address, field);
-            if(field_count == 4) strcpy(persons[i].zipcode, field);
+            if(field_count == 4) persons[i].zipcode = strtol(field, NULL, 10);
 
             field = strtok(NULL, ",");
             field_count++;
@@ -66,17 +66,12 @@ int main(int argc, char *argv[])
 
     fp = NULL;
 
-    // for(int i = 0; i < sumOfRows; i++)
-    // {
-    //     printf("%s %s %s %s %s", persons[i].id, persons[i].name, persons[i].age, persons[i].address, persons[i].zipcode);
-    // }
-    
     // убрали символы конца строки
-    for(long int i = 0; i < sumOfRows-1; i++)
-    {
-        char* pFirstN = strstr(persons[i].zipcode, "\n");
-        *pFirstN = ' ';
-    }
+    // for(long int i = 0; i < sumOfRows-1; i++)
+    // {
+    //     char* pFirstN = strstr(persons[i].zipcode, "\n");
+    //     *pFirstN = ' ';
+    // }
 
 
     //Выбор поля для сортировки
@@ -88,19 +83,19 @@ int main(int argc, char *argv[])
     switch(cases)
     {
         case 1: 
-            printf("Выбран 1 \n");
+            printf("Выбран id \n");
             break;
         case 2: 
-            printf("Выбран 2 \n");
+            printf("Выбран name \n");
             break;
         case 3:
-            printf("Выбран 3 \n");
+            printf("Выбран age \n");
             break;
         case 4: 
-            printf("Выбран 4 \n");
+            printf("Выбран address \n");
             break;
         case 5: 
-            printf("Выбран 5 \n");
+            printf("Выбран zipcode \n");
             break;
         default: 
             printf("Пункт не выбран \n");
@@ -113,7 +108,7 @@ int main(int argc, char *argv[])
     {
         for(int j = i + 1; j < sumOfRows; j++)
         {
-            if((strcmp(persons[i].id, persons[j].id) > 0) && cases == 1)
+            if((persons[i].id > persons[j].id) && cases == 1)
             {
                 personVar = persons[i];
                 persons[i] = persons[j];
@@ -125,7 +120,7 @@ int main(int argc, char *argv[])
                 persons[i] = persons[j];
                 persons[j] = personVar;
             }
-            if((strcmp(persons[i].age, persons[j].age) > 0) && cases == 3)
+            if((persons[i].age > persons[j].age) && cases == 3)
             {
                 personVar = persons[i];
                 persons[i] = persons[j];
@@ -137,7 +132,7 @@ int main(int argc, char *argv[])
                 persons[i] = persons[j];
                 persons[j] = personVar;
             }
-            if((strcmp(persons[i].zipcode, persons[j].zipcode) > 0) && cases == 5)
+            if((persons[i].zipcode > persons[j].zipcode) && cases == 5)
             {
                 personVar = persons[i];
                 persons[i] = persons[j];
@@ -161,7 +156,9 @@ int main(int argc, char *argv[])
     {   
         if(i == 0) fprintf(fpw,"id,name,age,address,zipcode\n");
 
-        fprintf(fpw,"%s,%s,%s,%s,%s\n", persons[i].id, persons[i].name, persons[i].age, persons[i].address, persons[i].zipcode);
+        if(i != (sumOfRows - 1)) fprintf(fpw,"%d,%s,%d,%s,%ld\n", persons[i].id, persons[i].name, persons[i].age, persons[i].address, persons[i].zipcode);
+        if(i == (sumOfRows - 1)) fprintf(fpw,"%d,%s,%d,%s,%ld", persons[i].id, persons[i].name, persons[i].age, persons[i].address, persons[i].zipcode);
+   
     }
 
     fclose(fpw);
