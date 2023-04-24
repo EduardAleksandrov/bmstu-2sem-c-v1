@@ -102,7 +102,7 @@ int main(int argc, char *argv[])
         struct person personVar;
         for(long int i = 0; i < sumOfRows-1; i++)
         {
-            for(int j = i + 1; j < sumOfRows; j++)
+            for(long int j = i + 1; j < sumOfRows; j++)
             {
                 if((persons[i].id > persons[j].id) && cases == 1)
                 {
