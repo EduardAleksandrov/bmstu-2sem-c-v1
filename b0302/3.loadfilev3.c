@@ -33,7 +33,7 @@ int main(int argc, char *argv[])
     }
 
     struct person *persons = (struct person *) malloc(sizeof(struct person)*sumOfRows);
-    
+
     char buff[1024];
     int i = 0;
     int row_count = 0;
@@ -47,7 +47,7 @@ int main(int argc, char *argv[])
         char *field = strtok(buff, ",");
         while(field)
         {
-            if(field_count == 0) persons[i].id = strtol(field, NULL, 10);
+            if(field_count == 0) persons[i].id = strtol(field, NULL, 10); // т.к. мы обращаемся к указателю через индексацию массива, то точка, а не стрелка
             if(field_count == 1) strcpy(persons[i].name, field);
             if(field_count == 2) persons[i].age = strtol(field, NULL, 10);
             if(field_count == 3) strcpy(persons[i].address, field);
@@ -157,6 +157,8 @@ int main(int argc, char *argv[])
         fclose(fpw);
         fpw = NULL;
     }
+
+    free(persons);
 
     return 0;
 }
