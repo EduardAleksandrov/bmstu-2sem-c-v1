@@ -5,6 +5,8 @@
 
 #define FILE_PATH_SOURCE "./testv1.csv"
 #define FILE_PATH_TARGET "./wtest.csv"
+#define SIZEOFBUFF 1024
+
 struct person
 {
     int id;
@@ -34,7 +36,7 @@ int main(int argc, char *argv[])
 
     struct person *persons = (struct person *) malloc(sizeof(struct person)*sumOfRows);
 
-    char buff[1024];
+    char buff[SIZEOFBUFF];
     int i = 0;
     int row_count = 0;
     int field_count = 0;
