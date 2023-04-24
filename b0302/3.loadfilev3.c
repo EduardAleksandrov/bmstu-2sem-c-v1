@@ -1,4 +1,4 @@
-// загрузка построчно (переменный массив) - работает 
+// загрузка построчно (массив в динамической памяти) - работает 
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
@@ -32,9 +32,9 @@ int main(int argc, char *argv[])
         printf("fopen opened\n");
     }
 
-    struct person persons[sumOfRows];
+    struct person *persons = (struct person *) malloc(sizeof(struct person)*sumOfRows);
+    
     char buff[1024];
-
     int i = 0;
     int row_count = 0;
     int field_count = 0;
@@ -158,24 +158,14 @@ int main(int argc, char *argv[])
     }
 
     for(long int i = 0; i < sumOfRows; i++)
-    {
+    {   
         if(i == 0) fprintf(fpw,"id,name,age,address,zipcode\n");
+
         fprintf(fpw,"%s,%s,%s,%s,%s\n", persons[i].id, persons[i].name, persons[i].age, persons[i].address, persons[i].zipcode);
     }
 
     fclose(fpw);
     fpw = NULL;
-
-    // for(long int i = 0; i < sumOfRows; i++)
-    // {
-    //     printf("%s %s %s %s %s \n", persons[i].id, persons[i].name, persons[i].age, persons[i].address, persons[i].zipcode);
-    // }
-
-    // FILE *fpp;
-    // fpp = fopen(FILE_PATH_TARGET, "w");
-    // for(int i = 0; i<5; i++)
-    //     fprintf(fp,"Строка\n");
-    // fclose(fpp);
 
     return 0;
 }

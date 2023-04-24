@@ -1,4 +1,4 @@
-// загрузка в буфер
+// загрузка в буфер посимвольно
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
