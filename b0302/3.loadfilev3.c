@@ -182,13 +182,16 @@ int main(int argc, char *argv[])
 long int getFileLineSize(char* file_name){
     long int sumOfRows = 0;
     char ch;
-	FILE* fd = fopen(file_name, "r");
-	if(fd == NULL){
+	
+    FILE* fd = fopen(file_name, "r");
+	
+    if(fd == NULL){
         printf("frLineOpen failed\n");
 		sumOfRows = -1;
 	} else {
         printf("frLineOpen opened\n");
-		while((ch = getc(fd)) != EOF){
+		while((ch = getc(fd)) != EOF)
+        {
             if (ch == '\n') sumOfRows++;
         }
 		fclose(fd);
