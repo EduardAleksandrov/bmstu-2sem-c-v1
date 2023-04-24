@@ -5,9 +5,6 @@
 
 #define FILE_PATH_SOURCE "./testv1.csv"
 #define FILE_PATH_TARGET "./wtest.csv"
-
-
-
 struct person
 {
     int id;
@@ -19,9 +16,12 @@ struct person
 
 long int getFileLineSize(char*);
 
+
 int main(int argc, char *argv[])
 {
+    // подсчет строк
     long int sumOfRows = getFileLineSize(FILE_PATH_SOURCE);
+    
     FILE *fp;
     fp = fopen(FILE_PATH_SOURCE, "r");
     
@@ -40,13 +40,9 @@ int main(int argc, char *argv[])
     int field_count = 0;
     while(fgets(buff, sizeof(buff), fp))
     {
-        // printf("%s", buff);
         field_count = 0;
         row_count++;
         if(row_count == 1) continue;
-
-        // char* pFirstN = strstr(buff, "\n");
-        // *pFirstN = 'x';
 
         char *field = strtok(buff, ",");
         while(field)
@@ -65,19 +61,16 @@ int main(int argc, char *argv[])
     fclose(fp);
     fp = NULL;
 
-    // убрали символы конца строки
-    // for(long int i = 0; i < sumOfRows-1; i++)
-    // {
-    //     char* pFirstN = strstr(persons[i].zipcode, "\n");
-    //     *pFirstN = ' ';
-    // }
-
-
     //Выбор поля для сортировки
     int cases= 0;
     printf("Введите цифру для сортировки поля \n");
     printf("1 - id, 2 - name, 3 - age, 4 - address, 5 - zipcode \n");
-    scanf("%d", &cases);
+    for(;;)
+    {
+        scanf("%d", &cases);
+        if(cases >= 0 && cases <= 5) break;
+        if(cases < 1 || cases > 5) printf("Пункт не выбран, выберите пункт, или ноль для выхода \n");
+    }
 
     switch(cases)
     {
@@ -100,68 +93,70 @@ int main(int argc, char *argv[])
             printf("Пункт не выбран \n");
             break;
     }
-
-    //сортировка
-    struct person personVar;
-    for(long int i = 0; i < sumOfRows-1; i++)
+    
+    if(cases >= 1 && cases <= 5)
     {
-        for(int j = i + 1; j < sumOfRows; j++)
+        //сортировка
+        struct person personVar;
+        for(long int i = 0; i < sumOfRows-1; i++)
         {
-            if((persons[i].id > persons[j].id) && cases == 1)
+            for(int j = i + 1; j < sumOfRows; j++)
             {
-                personVar = persons[i];
-                persons[i] = persons[j];
-                persons[j] = personVar;
-            }
-            if((strcmp(persons[i].name, persons[j].name) > 0) && cases == 2)
-            {
-                personVar = persons[i];
-                persons[i] = persons[j];
-                persons[j] = personVar;
-            }
-            if((persons[i].age > persons[j].age) && cases == 3)
-            {
-                personVar = persons[i];
-                persons[i] = persons[j];
-                persons[j] = personVar;
-            }
-            if((strcmp(persons[i].address, persons[j].address) > 0) && cases == 4)
-            {
-                personVar = persons[i];
-                persons[i] = persons[j];
-                persons[j] = personVar;
-            }
-            if((persons[i].zipcode > persons[j].zipcode) && cases == 5)
-            {
-                personVar = persons[i];
-                persons[i] = persons[j];
-                persons[j] = personVar;
+                if((persons[i].id > persons[j].id) && cases == 1)
+                {
+                    personVar = persons[i];
+                    persons[i] = persons[j];
+                    persons[j] = personVar;
+                }
+                if((strcmp(persons[i].name, persons[j].name) > 0) && cases == 2)
+                {
+                    personVar = persons[i];
+                    persons[i] = persons[j];
+                    persons[j] = personVar;
+                }
+                if((persons[i].age > persons[j].age) && cases == 3)
+                {
+                    personVar = persons[i];
+                    persons[i] = persons[j];
+                    persons[j] = personVar;
+                }
+                if((strcmp(persons[i].address, persons[j].address) > 0) && cases == 4)
+                {
+                    personVar = persons[i];
+                    persons[i] = persons[j];
+                    persons[j] = personVar;
+                }
+                if((persons[i].zipcode > persons[j].zipcode) && cases == 5)
+                {
+                    personVar = persons[i];
+                    persons[i] = persons[j];
+                    persons[j] = personVar;
+                }
             }
         }
-    }
-
-    // запись в файл
-    FILE *fpw;
-    fpw = fopen(FILE_PATH_TARGET, "w");
     
-    if (fpw == NULL)
-    {
-        printf("fopen failed\n");
-    } else {
-        printf("fopen opened\n");
+        // запись в файл
+        FILE *fpw;
+        fpw = fopen(FILE_PATH_TARGET, "w");
+        
+        if (fpw == NULL)
+        {
+            printf("fopen failed\n");
+        } else {
+            printf("fopen opened\n");
+        }
+
+        for(long int i = 0; i < sumOfRows; i++)
+        {   
+            if(i == 0) fprintf(fpw,"id,name,age,address,zipcode\n");
+
+            if(i != (sumOfRows - 1)) fprintf(fpw,"%d,%s,%d,%s,%ld\n", persons[i].id, persons[i].name, persons[i].age, persons[i].address, persons[i].zipcode);
+            if(i == (sumOfRows - 1)) fprintf(fpw,"%d,%s,%d,%s,%ld", persons[i].id, persons[i].name, persons[i].age, persons[i].address, persons[i].zipcode);
+        }
+
+        fclose(fpw);
+        fpw = NULL;
     }
-
-    for(long int i = 0; i < sumOfRows; i++)
-    {   
-        if(i == 0) fprintf(fpw,"id,name,age,address,zipcode\n");
-
-        if(i != (sumOfRows - 1)) fprintf(fpw,"%d,%s,%d,%s,%ld\n", persons[i].id, persons[i].name, persons[i].age, persons[i].address, persons[i].zipcode);
-        if(i == (sumOfRows - 1)) fprintf(fpw,"%d,%s,%d,%s,%ld", persons[i].id, persons[i].name, persons[i].age, persons[i].address, persons[i].zipcode);
-   
-    }
-
-    fclose(fpw);
-    fpw = NULL;
 
     return 0;
 }
