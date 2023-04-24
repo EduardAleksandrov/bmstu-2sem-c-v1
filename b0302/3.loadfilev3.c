@@ -24,6 +24,10 @@ int main(int argc, char *argv[])
     // подсчет строк
     long int sumOfRows = getFileLineSize(FILE_PATH_SOURCE);
     
+    // создание структур
+    struct person *persons = (struct person *) malloc(sizeof(struct person)*sumOfRows);
+
+    // считывание данных из файла в массив структур
     FILE *fp;
     fp = fopen(FILE_PATH_SOURCE, "r");
     
@@ -33,8 +37,6 @@ int main(int argc, char *argv[])
     } else {
         printf("fopen opened\n");
     }
-
-    struct person *persons = (struct person *) malloc(sizeof(struct person)*sumOfRows);
 
     char buff[SIZEOFBUFF];
     int i = 0;
@@ -161,6 +163,7 @@ int main(int argc, char *argv[])
     }
 
     free(persons);
+    persons = NULL;
 
     return 0;
 }
