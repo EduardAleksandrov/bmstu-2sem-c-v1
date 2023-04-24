@@ -23,9 +23,18 @@ int main(int argc, char *argv[])
 {
     // подсчет строк
     long int sumOfRows = getFileLineSize(FILE_PATH_SOURCE);
-    
+    if(sumOfRows == -1) 
+    {
+        printf("Файл для подсчета строк не открылся");
+        exit(1);
+    }
+
     // создание структур
     struct person *persons = (struct person *) malloc(sizeof(struct person)*sumOfRows);
+    if (persons == NULL) {
+        printf("Память не выделена, ошибка");
+        exit(1);
+    }
 
     // считывание данных из файла в массив структур
     FILE *fp;
@@ -33,9 +42,10 @@ int main(int argc, char *argv[])
     
     if (fp == NULL)
     {
-        printf("fopen failed\n");
+        printf("fropen failed\n");
+        exit(1);
     } else {
-        printf("fopen opened\n");
+        printf("fropen opened\n");
     }
 
     char buff[SIZEOFBUFF];
@@ -145,9 +155,10 @@ int main(int argc, char *argv[])
         
         if (fpw == NULL)
         {
-            printf("fopen failed\n");
+            printf("fwopen failed\n");
+            exit(1);
         } else {
-            printf("fopen opened\n");
+            printf("fwopen opened\n");
         }
 
         for(long int i = 0; i < sumOfRows; i++)
@@ -173,8 +184,10 @@ long int getFileLineSize(char* file_name){
     char ch;
 	FILE* fd = fopen(file_name, "r");
 	if(fd == NULL){
+        printf("frLineOpen failed\n");
 		sumOfRows = -1;
 	} else {
+        printf("frLineOpen opened\n");
 		while((ch = getc(fd)) != EOF){
             if (ch == '\n') sumOfRows++;
         }
