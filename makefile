@@ -78,3 +78,9 @@ run6.sort:
 
 run6.infincycle:
 	gcc -std=c17 ./6.infincycle.c -o build/6.infincycle -g && ./build/6.infincycle 
+
+run7.stack:
+	gcc -std=c17 ./7.stack.c -o build/7.stack -g && ./build/7.stack 
+
+run7.stackv2:
+	gcc -std=c17 ./7.stackv2.c -o build/7.stackv2 -g && ./build/7.stackv2 
