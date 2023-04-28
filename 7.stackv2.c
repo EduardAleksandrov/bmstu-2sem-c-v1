@@ -9,6 +9,7 @@
 int main(void)
 {
     int *stack = (int *) calloc(SIZE, sizeof(int));
+    struct stacked stacks;
 
     int value;
     stacks.stackBase = stack;
