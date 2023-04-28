@@ -16,6 +16,10 @@ int main(void)
     // int stack[SIZE];
 
     int *stack = (int *) calloc(SIZE, sizeof(int));
+    if (stack == NULL) {
+        printf("Память не выделена, ошибка");
+        exit(1);
+    }
 
     int value;
     stackBase = stack;
@@ -42,6 +46,9 @@ int main(void)
         }
 
     } while (value != -1);
+
+    free(stack);
+    stack = NULL;
 
     return 0;
 }

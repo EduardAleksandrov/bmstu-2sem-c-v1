@@ -9,6 +9,10 @@
 int main(void)
 {
     int *stack = (int *) calloc(SIZE, sizeof(int));
+    if (stack == NULL) {
+        printf("Память не выделена, ошибка");
+        exit(1);
+    }
     struct stacked stacks;
 
     int value;
@@ -32,6 +36,9 @@ int main(void)
             printf("\n");
         }
     } while (value != -1);
+
+    free(stack);
+    stack = NULL;
 
     return 0;
 }
