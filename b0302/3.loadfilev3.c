@@ -1,4 +1,8 @@
-// загрузка построчно (массив в динамической памяти) - работает 
+/*
+    Task: Считывает csv файл, сортирует по выбранному столбцу, сохраняет в другой csv файл.
+    Загрузка построчно (массив в динамической памяти) - работает
+*/
+
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
@@ -16,6 +20,7 @@ struct person
     long int zipcode;
 };
 
+// сколько строк в файле
 long int getFileLineSize(char*);
 
 
@@ -111,7 +116,7 @@ int main(int argc, char *argv[])
     if(cases >= 1 && cases <= 5)
     {
         //сортировка
-        struct person personVar;
+        struct person personVar; // промежуточная структура
         for(long int i = 0; i < sumOfRows-1; i++)
         {
             for(long int j = i + 1; j < sumOfRows; j++)

@@ -24,7 +24,7 @@ struct person
 long int getFileLineSize(char*);
 
 // сортировка структур
-void xchange(struct person *, long int, long int, struct person);
+void xchange(struct person *, long int, long int, struct person *);
 
 
 
@@ -120,30 +120,30 @@ int main(int argc, char *argv[])
     if(cases >= 1 && cases <= 5)
     {
         //сортировка
-        struct person personVar;
+        struct person personVar; // промежуточная структура
         for(long int i = 0; i < sumOfRows-1; i++)
         {
             for(long int j = i + 1; j < sumOfRows; j++)
             {
                 if((persons[i].id > persons[j].id) && cases == 1)
                 {
-                    xchange(persons, i, j, personVar);
+                    xchange(persons, i, j, &personVar);
                 }
                 if((strcmp(persons[i].name, persons[j].name) > 0) && cases == 2)
                 {
-                    xchange(persons, i, j, personVar);
+                    xchange(persons, i, j, &personVar);
                 }
                 if((persons[i].age > persons[j].age) && cases == 3)
                 {
-                    xchange(persons, i, j, personVar);
+                    xchange(persons, i, j, &personVar);
                 }
                 if((strcmp(persons[i].address, persons[j].address) > 0) && cases == 4)
                 {
-                    xchange(persons, i, j, personVar);
+                    xchange(persons, i, j, &personVar);
                 }
                 if((persons[i].zipcode > persons[j].zipcode) && cases == 5)
                 {
-                    xchange(persons, i, j, personVar);
+                    xchange(persons, i, j, &personVar);
                 }
             }
         }
@@ -202,9 +202,9 @@ long int getFileLineSize(char* file_name)
 }
 
 
-void xchange(struct person *persons, long int i, long int j, struct person personVar)
+void xchange(struct person *persons, long int i, long int j, struct person *personVar)
 {
-    personVar = persons[i];
+    *personVar = persons[i];
     persons[i] = persons[j];
-    persons[j] = personVar;
+    persons[j] = *personVar;
 }
