@@ -62,7 +62,7 @@ int main(int argc, char *argv[])
             printf("Пункт не выбран \n");
             break;
     }
-    // Выход, если не выбран ноль
+    // Выход, если выбран ноль
     if(cases == 0) exit(0);
     
     
@@ -88,7 +88,8 @@ int main(int argc, char *argv[])
     
     if (fp == NULL)
     {
-        printf("fropen failed\n");
+        //printf("fropen failed\n");
+        perror("fropen failed ");
         exit(1);
     } else {
         printf("fropen opened\n");
@@ -157,7 +158,8 @@ int main(int argc, char *argv[])
     
     if (fpw == NULL)
     {
-        printf("fwopen failed\n");
+        //printf("fwopen failed\n");
+        perror("fwopen failed ");
         exit(1);
     } else {
         printf("fwopen opened\n");
@@ -203,7 +205,6 @@ long int getFileLineSize(char* file_name)
     }
     return sumOfRows;
 }
-
 
 void xchange(struct person *persons, long int i, long int j, struct person *personVar)
 {
