@@ -33,7 +33,7 @@ int callbackNumOfRows(void*, int, char**, char**);
 
 // получение данных из базы данных
 int callbackData(void*, int, char**, char**);
-long int iii = 0;
+long int iii = 0; // счетчик строк для выборки в структуру из базы данных
 
 
 int main(int argc, char *argv[])
@@ -171,7 +171,6 @@ int main(int argc, char *argv[])
             sqlite3_close(db);
             exit(1);
         }
-        //printf("%ld \n", sumOfRows);
         // закрываем подключение
         sqlite3_close(db);
     }
@@ -218,8 +217,8 @@ int main(int argc, char *argv[])
         fclose(fp);
         fp = NULL;
     }
-    
-    
+
+
 
 //сортировка
     struct person personVar; // промежуточная структура
