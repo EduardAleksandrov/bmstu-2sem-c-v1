@@ -120,6 +120,7 @@ int main(int argc, char *argv[])
         //printf("%ld \n", sumOfRows);
         // закрываем подключение
         sqlite3_close(db);
+        db = NULL;
     }
 
     // из файла
@@ -174,6 +175,7 @@ int main(int argc, char *argv[])
         }
         // закрываем подключение
         sqlite3_close(db);
+        db = NULL;
     }
 
     // считывание из файла
