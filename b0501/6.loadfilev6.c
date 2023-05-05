@@ -33,7 +33,7 @@ int callbackNumOfRows(void*, int, char**, char**);
 
 // получение данных из базы данных
 int callbackData(void*, int, char**, char**);
-long int iii = 0; // счетчик строк для выборки в структуру из базы данных
+// long int iii = 0; // счетчик строк для выборки в структуру из базы данных
 
 
 int main(int argc, char *argv[])
@@ -319,8 +319,8 @@ int callbackNumOfRows(void *sumOfRows, int colCount, char **columns, char **colN
 
 int callbackData(void *persons, int colCount, char **columns, char **colNames)
 {
-    struct person *personsInside = (struct person *)persons;
-
+    struct person *personsInside = (struct person *)persons; // ссылка на структуру persons
+    static long int iii = 0; // счетчик строк для выборки в структуру из базы данных
     for (int j = 0; j < colCount; j++)
     {
         if(j == 0)
