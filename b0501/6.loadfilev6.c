@@ -33,7 +33,7 @@ int callbackNumOfRows(void*, int, char**, char**);
 
 // получение данных из базы данных
 int callbackData(void*, int, char**, char**);
-// long int iii = 0; // счетчик строк для выборки в структуру из базы данных
+// long int rowCount = 0; // счетчик строк для выборки в структуру из базы данных
 
 
 int main(int argc, char *argv[])
@@ -320,30 +320,30 @@ int callbackNumOfRows(void *sumOfRows, int colCount, char **columns, char **colN
 int callbackData(void *persons, int colCount, char **columns, char **colNames)
 {
     struct person *personsInside = (struct person *)persons; // ссылка на структуру persons
-    static long int iii = 0; // счетчик строк для выборки в структуру из базы данных
+    static long int rowCount = 0; // счетчик строк для выборки в структуру из базы данных
     for (int j = 0; j < colCount; j++)
     {
         if(j == 0)
         {
-            personsInside[iii].id = strtol(columns[j], NULL, 10);
+            personsInside[rowCount].id = strtol(columns[j], NULL, 10);
         }
         if(j == 1)
         {
-            strcpy(personsInside[iii].name, columns[j]);
+            strcpy(personsInside[rowCount].name, columns[j]);
         }
         if(j == 2)
         {
-            personsInside[iii].age = strtol(columns[j], NULL, 10);
+            personsInside[rowCount].age = strtol(columns[j], NULL, 10);
         }
         if(j == 3)
         {
-            strcpy(personsInside[iii].address, columns[j]);
+            strcpy(personsInside[rowCount].address, columns[j]);
         }
         if(j == 4)
         {
-            personsInside[iii].zipcode = strtol(columns[j], NULL, 10);
+            personsInside[rowCount].zipcode = strtol(columns[j], NULL, 10);
         }
     }
-    iii++;
+    rowCount++;
     return 0;
 }
