@@ -12,6 +12,7 @@
 #define FILE_PATH_SOURCE "./testv1.csv"
 #define FILE_PATH_TARGET "./wtest.csv"
 #define SIZEOFBUFF 1024
+#define DATABASE_PATH_SOURCE "./test.db"
 
 struct person
 {
@@ -92,7 +93,7 @@ int main(int argc, char *argv[])
     {
         sqlite3 *db;    // указатель на базу данных
         // открываем подключение к базе данных
-        int result  = sqlite3_open("test.db", &db);
+        int result  = sqlite3_open(DATABASE_PATH_SOURCE, &db);
         // если подключение успешно установлено
         if(result == SQLITE_OK) 
         {
@@ -147,7 +148,7 @@ int main(int argc, char *argv[])
     {
         sqlite3 *db;    // указатель на базу данных
         // открываем подключение к базе данных
-        int getData  = sqlite3_open("test.db", &db);
+        int getData  = sqlite3_open(DATABASE_PATH_SOURCE, &db);
         // если подключение успешно установлено
         if(getData == SQLITE_OK) 
         {
