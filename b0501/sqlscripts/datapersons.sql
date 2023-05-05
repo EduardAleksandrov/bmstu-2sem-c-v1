@@ -9,4 +9,5 @@ INSERT INTO persons(name, age, address, zipcode) VALUES
 ('Sofia',19,'Bakuninskay',507924),
 ('Tom',37,'Planetnaya',345462),
 ('Bob',41,'Botanicheskaya', 928532),
-('Sam',28,'Radyuznaya',643297);
+('Sam',28,'Radyuznaya',643297),
+('Eddie',21,'Filimonova',532525);
