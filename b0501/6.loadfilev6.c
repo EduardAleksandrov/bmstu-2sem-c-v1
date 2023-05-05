@@ -109,7 +109,7 @@ int main(int argc, char *argv[])
         char *err_msg = 0;
         char *sqlNumOfRows = "SELECT Count(*) as rowsnum FROM persons";
         result = sqlite3_exec(db, sqlNumOfRows, callbackNumOfRows, &sumOfRows, &err_msg);
-        if (result != SQLITE_OK )
+        if (result != SQLITE_OK)
         {
             printf("SQL error: %s\n", err_msg);
             sqlite3_free(err_msg);
@@ -164,7 +164,7 @@ int main(int argc, char *argv[])
         char *err_msg = 0;
         char *sqlData = "SELECT * FROM persons";
         getData = sqlite3_exec(db, sqlData, callbackData, persons, &err_msg);
-        if (getData != SQLITE_OK )
+        if (getData != SQLITE_OK)
         {
             printf("SQL error: %s\n", err_msg);
             sqlite3_free(err_msg);
