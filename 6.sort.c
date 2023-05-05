@@ -68,7 +68,12 @@ int main(void)
         printf("%s \n", str[i]);
     }
 
-   
+// массивы и указатели
+
+char *xx = "String"; //размер не считает
+char yy[] = "String22"; //размер считает
+
+printf("%ld \n", sizeof(*xx));
 
     return 0;
 }
