@@ -94,8 +94,8 @@ int main(int argc, char *argv[])
     }
 
     char buff[SIZEOFBUFF]; // размер считываемой строки
-    int i = 0; // счетчик количества строк
-    int row_count = 0; // переменная определяющая первую строку для её пропуска
+    long int i = 0; // счетчик количества строк
+    long int row_count = 0; // переменная определяющая первую строку для её пропуска
     int field_count = 0; // счетчик для перебора столбцов
     while(fgets(buff, sizeof(buff), fp)) // перебор строк
     {

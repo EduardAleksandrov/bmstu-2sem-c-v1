@@ -96,8 +96,8 @@ int main(int argc, char *argv[])
     }
 
     char buff[SIZEOFBUFF];
-    int i = 0;
-    int row_count = 0;
+    long int i = 0;
+    long int row_count = 0;
     int field_count = 0;
     while(fgets(buff, sizeof(buff), fp))
     {

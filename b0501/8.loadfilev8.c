@@ -196,13 +196,13 @@ int main(int argc, char *argv[])
         }
 
         char buff[SIZEOFBUFF]; // размер считываемой строки
-        int i = 0; // счетчик количества строк
-        int row_count = 0; // переменная определяющая первую строку для её пропуска
-        int field_count = 0; // счетчик для перебора столбцов
+        unsigned long int i = 0; // счетчик количества строк
+        unsigned short int row_count = 0; // переменная определяющая первую строку для её пропуска
+        unsigned short int field_count = 0; // счетчик для перебора столбцов
         while(fgets(buff, sizeof(buff), fp)) // перебор строк
         {
             field_count = 0;
-            row_count++;
+            if(row_count < 2) row_count++;
             if(row_count == 1) continue;
 
             char *field = strtok(buff, ","); // выбор первого столбца
@@ -288,8 +288,8 @@ int main(int argc, char *argv[])
     {   
         if(i == 0) fprintf(fpw,"id,name,age,address,zipcode\n");
 
-        if(i != (sumOfRows - 1)) fprintf(fpw,"%lld,%s,%d,%s,%ld\n", persons[i].id, persons[i].name, persons[i].age, persons[i].address, persons[i].zipcode);
-        if(i == (sumOfRows - 1)) fprintf(fpw,"%lld,%s,%d,%s,%ld", persons[i].id, persons[i].name, persons[i].age, persons[i].address, persons[i].zipcode);
+        if(i != (sumOfRows - 1)) fprintf(fpw,"%llu,%s,%d,%s,%ld\n", persons[i].id, persons[i].name, persons[i].age, persons[i].address, persons[i].zipcode);
+        if(i == (sumOfRows - 1)) fprintf(fpw,"%llu,%s,%d,%s,%ld", persons[i].id, persons[i].name, persons[i].age, persons[i].address, persons[i].zipcode);
     }
 
     fclose(fpw);
