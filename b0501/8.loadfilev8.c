@@ -2,7 +2,8 @@
     Task: Считывает csv файл, сортирует по выбранному столбцу, сохраняет в другой csv файл.
     Загрузка построчно (массив в динамической памяти)(выведение сортировки в функцию)(вначале ввод)
     Загрузка данных либо из базы данных либо из файла
-    Связанный список (нахождение среднего возраста) - работает 
+    Связанный список (нахождение среднего возраста) - пока закомментирован
+    Дополнены исправления от преподавателя(структура через массив...) - работает
 */
 
 #include <stdio.h>
@@ -12,8 +13,9 @@
 
 #define FILE_PATH_SOURCE "./testv1.csv"
 #define FILE_PATH_TARGET "./wtest.csv"
-#define SIZEOFBUFF 1024
+#define SIZEOFBUFF 1024 // размер строки для выборки fgets из файла
 #define DATABASE_PATH_SOURCE "./test.db"
+#define NUMOFCASES 5 // Количество столбцов для сортировки
 
 struct person
 {
@@ -29,20 +31,19 @@ struct person
 long int getFileLineSize(char*);
 
 // сортировка структур
-void xchange(struct person *, long int, long int, struct person *);
+void xchange(struct person *, long int, long int);
 
-// подсчет строк в базе данных
+// подсчет строк в базе данных (функция обратного вызова)
 int callbackNumOfRows(void*, int, char**, char**);
 
-// получение данных из базы данных
+// получение данных из базы данных (функция обратного вызова)
 int callbackData(void*, int, char**, char**);
-// long int rowCount = 0; // счетчик строк для выборки в структуру из базы данных
 
 
 int main(int argc, char *argv[])
 {
 //Выбор источника данных
-    int sourceOfData = 0;
+    int sourceOfData;
     printf("Нажмите 1 для выбора базы данных, нажмите 2 для файла, нажмите ноль для выхода \n");
     for(;;)
     {
@@ -50,18 +51,18 @@ int main(int argc, char *argv[])
         if(sourceOfData >=0 && sourceOfData <= 2) break;
         if(sourceOfData < 0 || sourceOfData > 2) printf("Пункт не выбран, выберите пункт, или ноль для выхода \n");
     }
-        // Выход, если выбран ноль
+    // Выход, если выбран ноль
     if(sourceOfData == 0) exit(0);
 
 //Выбор поля для сортировки
-    int cases= 0;
+    int cases;
     printf("Введите цифру для сортировки поля \n");
     printf("1 - id, 2 - name, 3 - age, 4 - address, 5 - zipcode, 0 - выход\n");
     for(;;)
     {
         scanf("%d", &cases);
-        if(cases >= 0 && cases <= 5) break;
-        if(cases < 1 || cases > 5) printf("Пункт не выбран, выберите пункт, или ноль для выхода \n");
+        if(cases >= 0 && cases <= NUMOFCASES) break;
+        if(cases < 1 || cases > NUMOFCASES) printf("Пункт не выбран, выберите пункт, или ноль для выхода \n");
     }
 
     switch(cases)
@@ -111,15 +112,14 @@ int main(int argc, char *argv[])
         
         char *err_msg = 0;
         char *sqlNumOfRows = "SELECT Count(*) as rowsnum FROM persons";
-        result = sqlite3_exec(db, sqlNumOfRows, callbackNumOfRows, &sumOfRows, &err_msg);
+        result = sqlite3_exec(db, sqlNumOfRows, callbackNumOfRows, &sumOfRows, &err_msg);  //sumOfRows передается в функцию обратного вызова в качестве параметра
         if (result != SQLITE_OK)
         {
             printf("SQL error: %s\n", err_msg);
-            sqlite3_free(err_msg);
+            sqlite3_free(err_msg); // очистка строки с ошибкой
             sqlite3_close(db);
             exit(1);
         }
-        //printf("%ld \n", sumOfRows);
         // закрываем подключение
         sqlite3_close(db);
         db = NULL;
@@ -135,17 +135,10 @@ int main(int argc, char *argv[])
             exit(1);
         }
     }
-    
-    
+
 
 // создание структур
-    struct person *persons = (struct person *) malloc(sizeof(struct person)*sumOfRows);
-    if (persons == NULL) {
-        printf("Память не выделена, ошибка");
-        exit(1);
-    }
-
-
+    struct person persons[sumOfRows];
 
 
 // считывание данных в массив структур
@@ -170,7 +163,7 @@ int main(int argc, char *argv[])
         
         char *err_msg = 0;
         char *sqlData = "SELECT * FROM persons";
-        getData = sqlite3_exec(db, sqlData, callbackData, persons, &err_msg);
+        getData = sqlite3_exec(db, sqlData, callbackData, persons, &err_msg); // структура persons передается в функцию обратного вызова в качестве параметра
         if (getData != SQLITE_OK)
         {
             printf("SQL error: %s\n", err_msg);
@@ -198,17 +191,17 @@ int main(int argc, char *argv[])
             printf("fropen opened\n");
         }
 
-        char buff[SIZEOFBUFF];
-        int i = 0;
-        int row_count = 0;
-        int field_count = 0;
-        while(fgets(buff, sizeof(buff), fp))
+        char buff[SIZEOFBUFF]; // размер считываемой строки
+        int i = 0; // счетчик количества строк
+        int row_count = 0; // переменная определяющая первую строку для её пропуска
+        int field_count = 0; // счетчик для перебора столбцов
+        while(fgets(buff, sizeof(buff), fp)) // перебор строк
         {
             field_count = 0;
             row_count++;
             if(row_count == 1) continue;
 
-            char *field = strtok(buff, ",");
+            char *field = strtok(buff, ","); // выбор первого столбца
             while(field)
             {
                 if(field_count == 0) persons[i].id = strtol(field, NULL, 10); // т.к. мы обращаемся к указателю через индексацию массива, то точка, а не стрелка
@@ -217,7 +210,7 @@ int main(int argc, char *argv[])
                 if(field_count == 3) strcpy(persons[i].address, field);
                 if(field_count == 4) persons[i].zipcode = strtol(field, NULL, 10);
 
-                field = strtok(NULL, ",");
+                field = strtok(NULL, ","); // выбор последующего столбца
                 field_count++;
             }
             i++;
@@ -226,50 +219,50 @@ int main(int argc, char *argv[])
         fp = NULL;
     }
 
-// Связывание структур для организации списка
-    for(long int i = 0; i < sumOfRows - 1; i++)
-    {
-        persons[i].link = &persons[i+1];
-    }
-
-// поиск среднего через связанный список
-    struct person *personsPointer = persons;
-    long long int sum = 0;
-    while(personsPointer != NULL)
-    {
-        sum += personsPointer->age;
-        personsPointer = personsPointer->link;
-    }
-    float middleAge = sum / (float)sumOfRows;
-    // middleAge =378/12.0;
-    printf("Средний возраст(лет): %.2f \n", middleAge);
+// // Связывание структур для организации списка
+//     for(long int i = 0; i < sumOfRows - 1; i++)
+//     {
+//         persons[i].link = &persons[i+1];
+//     }
+//     persons[sumOfRows-1].link = NULL; // для последней структуры устанавливаем указатель NULL
+    
+// // поиск среднего через связанный список
+//     struct person *personsPointer = &persons[0];
+//     long long int sum = 0;
+//     while(personsPointer != NULL)
+//     {
+//         sum += personsPointer->age;
+//         personsPointer = personsPointer->link;
+//     }
+//     float middleAge = sum / (float)sumOfRows;
+//     // middleAge =378/12.0;
+//     printf("Средний возраст(лет): %.2f \n", middleAge);
 
 
 //сортировка
-    struct person personVar; // промежуточная структура
     for(long int i = 0; i < sumOfRows-1; i++)
     {
         for(long int j = i + 1; j < sumOfRows; j++)
         {
             if((persons[i].id > persons[j].id) && cases == 1)
             {
-                xchange(persons, i, j, &personVar);
+                xchange(persons, i, j);
             }
             if((strcmp(persons[i].name, persons[j].name) > 0) && cases == 2)
             {
-                xchange(persons, i, j, &personVar);
+                xchange(persons, i, j);
             }
             if((persons[i].age > persons[j].age) && cases == 3)
             {
-                xchange(persons, i, j, &personVar);
+                xchange(persons, i, j);
             }
             if((strcmp(persons[i].address, persons[j].address) > 0) && cases == 4)
             {
-                xchange(persons, i, j, &personVar);
+                xchange(persons, i, j);
             }
             if((persons[i].zipcode > persons[j].zipcode) && cases == 5)
             {
-                xchange(persons, i, j, &personVar);
+                xchange(persons, i, j);
             }
         }
     }
@@ -298,9 +291,6 @@ int main(int argc, char *argv[])
     fclose(fpw);
     fpw = NULL;
 
-// очистка
-    free(persons);
-    persons = NULL;
 
 // завершение
     return 0;
@@ -329,11 +319,12 @@ long int getFileLineSize(char* file_name)
     return sumOfRows;
 }
 
-void xchange(struct person *persons, long int i, long int j, struct person *personVar)
+void xchange(struct person *persons, long int i, long int j)
 {
-    *personVar = persons[i];
+    struct person personVar;
+    personVar = persons[i];
     persons[i] = persons[j];
-    persons[j] = *personVar;
+    persons[j] = personVar;
 }
 
 int callbackNumOfRows(void *sumOfRows, int colCount, char **columns, char **colNames)
@@ -344,7 +335,7 @@ int callbackNumOfRows(void *sumOfRows, int colCount, char **columns, char **colN
 
 int callbackData(void *persons, int colCount, char **columns, char **colNames)
 {
-    struct person *personsInside = (struct person *)persons; // ссылка на структуру persons
+    struct person *personsInside = (struct person *) persons; // ссылка на структуру persons, нужна для преобразования void в struct
     static long int rowCount = 0; // счетчик строк для выборки в структуру из базы данных
     for (int j = 0; j < colCount; j++)
     {

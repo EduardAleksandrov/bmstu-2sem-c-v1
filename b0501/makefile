@@ -7,3 +7,6 @@ run.bmstu0501.databasetest:
 
 run.bmstu0501.v7:
 	gcc -std=c17 ./7.loadfilev7.c -lsqlite3 -o build/7.loadfilev7  && ./build/7.loadfilev7
+
+run.bmstu0501.v8:
+	gcc -std=c17 ./8.loadfilev8.c -lsqlite3 -o build/8.loadfilev8  && ./build/8.loadfilev8

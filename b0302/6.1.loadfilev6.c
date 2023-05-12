@@ -1,6 +1,7 @@
 /*
     Task: Считывает csv файл, сортирует по выбранному столбцу, сохраняет в другой csv файл.
-    Загрузка построчно (массив в динамической памяти)(выведение сортировки в функцию)(вначале ввод) - работает
+    Загрузка построчно (массив в динамической памяти)(выведение сортировки в функцию)(вначале ввод)
+    Дополнены исправления от преподавателя (структура через массив...) - работает
 */
 
 #include <stdio.h>
@@ -9,7 +10,8 @@
 
 #define FILE_PATH_SOURCE "./testv1.csv"
 #define FILE_PATH_TARGET "./wtest.csv"
-#define SIZEOFBUFF 1024
+#define SIZEOFBUFF 1024 // размер строки для выборки fgets из файла
+#define NUMOFCASES 5 // Количество столбцов для сортировки
 
 struct person
 {
@@ -24,21 +26,21 @@ struct person
 long int getFileLineSize(char*);
 
 // сортировка структур
-void xchange(struct person *, long int, long int, struct person *);
+void xchange(struct person *, long int, long int);
 
 
 
 int main(int argc, char *argv[])
 {
 //Выбор поля для сортировки
-    int cases= 0;
+    int cases;
     printf("Введите цифру для сортировки поля \n");
     printf("1 - id, 2 - name, 3 - age, 4 - address, 5 - zipcode, 0 - выход \n");
     for(;;)
     {
         scanf("%d", &cases);
-        if(cases >= 0 && cases <= 5) break;
-        if(cases < 1 || cases > 5) printf("Пункт не выбран, выберите пункт, или ноль для выхода \n");
+        if(cases >= 0 && cases <= NUMOFCASES) break;
+        if(cases < 1 || cases > NUMOFCASES) printf("Пункт не выбран, выберите пункт, или ноль для выхода \n");
     }
 
     switch(cases)
@@ -76,11 +78,7 @@ int main(int argc, char *argv[])
     }
 
 // создание структур
-    struct person *persons = (struct person *) malloc(sizeof(struct person)*sumOfRows);
-    if (persons == NULL) {
-        printf("Память не выделена, ошибка");
-        exit(1);
-    }
+    struct person persons[sumOfRows];
 
 // считывание данных из файла в массив структур
     FILE *fp;
@@ -95,17 +93,17 @@ int main(int argc, char *argv[])
         printf("fropen opened\n");
     }
 
-    char buff[SIZEOFBUFF];
-    int i = 0;
-    int row_count = 0;
-    int field_count = 0;
-    while(fgets(buff, sizeof(buff), fp))
+    char buff[SIZEOFBUFF]; // размер считываемой строки
+    int i = 0; // счетчик количества строк
+    int row_count = 0; // переменная определяющая первую строку для её пропуска
+    int field_count = 0; // счетчик для перебора столбцов
+    while(fgets(buff, sizeof(buff), fp)) // перебор строк
     {
         field_count = 0;
         row_count++;
         if(row_count == 1) continue;
 
-        char *field = strtok(buff, ",");
+        char *field = strtok(buff, ","); // выбор первого столбца
         while(field)
         {
             if(field_count == 0) persons[i].id = strtol(field, NULL, 10); // т.к. мы обращаемся к указателю через индексацию массива, то точка, а не стрелка
@@ -114,7 +112,7 @@ int main(int argc, char *argv[])
             if(field_count == 3) strcpy(persons[i].address, field);
             if(field_count == 4) persons[i].zipcode = strtol(field, NULL, 10);
 
-            field = strtok(NULL, ",");
+            field = strtok(NULL, ","); // выбор последующего столбца
             field_count++;
         }
         i++;
@@ -124,30 +122,29 @@ int main(int argc, char *argv[])
     
 
 //сортировка линейная
-    struct person personVar; // промежуточная структура
     for(long int i = 0; i < sumOfRows-1; i++)
     {
         for(long int j = i + 1; j < sumOfRows; j++)
         {
             if((persons[i].id > persons[j].id) && cases == 1)
             {
-                xchange(persons, i, j, &personVar);
+                xchange(persons, i, j);
             }
             if((strcmp(persons[i].name, persons[j].name) > 0) && cases == 2)
             {
-                xchange(persons, i, j, &personVar);
+                xchange(persons, i, j);
             }
             if((persons[i].age > persons[j].age) && cases == 3)
             {
-                xchange(persons, i, j, &personVar);
+                xchange(persons, i, j);
             }
             if((strcmp(persons[i].address, persons[j].address) > 0) && cases == 4)
             {
-                xchange(persons, i, j, &personVar);
+                xchange(persons, i, j);
             }
             if((persons[i].zipcode > persons[j].zipcode) && cases == 5)
             {
-                xchange(persons, i, j, &personVar);
+                xchange(persons, i, j);
             }
         }
     }
@@ -176,10 +173,6 @@ int main(int argc, char *argv[])
     fclose(fpw);
     fpw = NULL;
 
-// очистка
-    free(persons);
-    persons = NULL;
-
 // завершение работы
     return 0;
 }
@@ -207,9 +200,10 @@ long int getFileLineSize(char* file_name)
     return sumOfRows;
 }
 
-void xchange(struct person *persons, long int i, long int j, struct person *personVar)
+void xchange(struct person *persons, long int i, long int j)
 {
-    *personVar = persons[i];
+    struct person personVar;
+    personVar = persons[i];
     persons[i] = persons[j];
-    persons[j] = *personVar;
+    persons[j] = personVar;
 }

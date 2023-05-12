@@ -13,3 +13,6 @@ run.bmstu0302.v4:
 
 run.bmstu0302.v5:
 	gcc -std=c17 ./5.loadfilev5.c -o build/5.loadfilev5  && ./build/5.loadfilev5
+
+run.bmstu0302.v6:
+	gcc -std=c17 ./6.1.loadfilev6.c -o build/6.1.loadfilev6  && ./build/6.1.loadfilev6
