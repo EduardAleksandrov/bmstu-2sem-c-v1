@@ -3,7 +3,8 @@
     Загрузка построчно (массив в динамической памяти)(выведение сортировки в функцию)(вначале ввод)
     Загрузка данных либо из базы данных либо из файла
     Связанный список (нахождение среднего возраста) - пока закомментирован
-    Дополнены исправления от преподавателя(структура через массив...) - работает
+    Дополнены исправления от преподавателя(структура через массив...)
+    Расширен диапазон до unsign long int - работает
 */
 
 #include <stdio.h>
@@ -96,7 +97,7 @@ int main(int argc, char *argv[])
     if(sourceOfData == 1)
     {
         sqlite3 *db;    // указатель на базу данных
-        // открываем подключение к базе данных
+        // открываем подключение к базе данных, открываем поток, заполняем структуру по работе с файлом
         int result  = sqlite3_open(DATABASE_PATH_SOURCE, &db);
         // если подключение успешно установлено
         if(result == SQLITE_OK) 
@@ -111,13 +112,14 @@ int main(int argc, char *argv[])
             exit(1);
         }
         
-        char *err_msg = 0;
-        char *sqlNumOfRows = "SELECT Count(*) as rowsnum FROM persons";
+        char *err_msg = 0; // указатель на сообщение об ошибки
+        char *sqlNumOfRows = "SELECT Count(*) as rowsnum FROM persons"; // команда запроса в базу данных
+        // Основная функция запроса
         result = sqlite3_exec(db, sqlNumOfRows, callbackNumOfRows, &sumOfRows, &err_msg);  //sumOfRows передается в функцию обратного вызова в качестве параметра
         if (result != SQLITE_OK)
         {
             printf("SQL error: %s\n", err_msg);
-            sqlite3_free(err_msg); // очистка строки с ошибкой
+            sqlite3_free(err_msg); // очистка указателя на строку с ошибкой
             sqlite3_close(db);
             exit(1);
         }
@@ -162,8 +164,9 @@ int main(int argc, char *argv[])
             exit(1);
         }
         
-        char *err_msg = 0;
-        char *sqlData = "SELECT * FROM persons";
+        char *err_msg = 0;  // указатель на сообщение об ошибки
+        char *sqlData = "SELECT * FROM persons";  // команда запроса в базу данных
+        // Основная функция запроса
         getData = sqlite3_exec(db, sqlData, callbackData, persons, &err_msg); // структура persons передается в функцию обратного вызова в качестве параметра
         if (getData != SQLITE_OK)
         {
