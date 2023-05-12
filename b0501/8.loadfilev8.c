@@ -16,22 +16,23 @@
 #define SIZEOFBUFF 1024 // размер строки для выборки fgets из файла
 #define DATABASE_PATH_SOURCE "./test.db"
 #define NUMOFCASES 5 // Количество столбцов для сортировки
+#define NUMSOURCEOFDATA 2 // количество источников данных
 
 struct person
 {
-    int id;
+    unsigned long long int id;
     char name[50];
     int age;
     char address[50];
-    long int zipcode;
-    struct person *link;
+    unsigned long int zipcode;
+    // struct person *link;
 };
 
 // сколько строк в файле
-long int getFileLineSize(char*);
+unsigned long int getFileLineSize(char*);
 
 // сортировка структур
-void xchange(struct person *, long int, long int);
+void xchange(struct person *, unsigned long int, unsigned long int);
 
 // подсчет строк в базе данных (функция обратного вызова)
 int callbackNumOfRows(void*, int, char**, char**);
@@ -48,8 +49,8 @@ int main(int argc, char *argv[])
     for(;;)
     {
         scanf("%d", &sourceOfData);
-        if(sourceOfData >=0 && sourceOfData <= 2) break;
-        if(sourceOfData < 0 || sourceOfData > 2) printf("Пункт не выбран, выберите пункт, или ноль для выхода \n");
+        if(sourceOfData >=0 && sourceOfData <= NUMSOURCEOFDATA) break;
+        if(sourceOfData < 0 || sourceOfData > NUMSOURCEOFDATA) printf("Пункт не выбран, выберите пункт, или ноль для выхода \n");
     }
     // Выход, если выбран ноль
     if(sourceOfData == 0) exit(0);
@@ -90,7 +91,7 @@ int main(int argc, char *argv[])
     if(cases == 0) exit(0);
     
 // подсчет строк
-    long int sumOfRows; //количество строк
+    unsigned long int sumOfRows; //количество строк
     // из базы
     if(sourceOfData == 1)
     {
@@ -220,7 +221,7 @@ int main(int argc, char *argv[])
     }
 
 // // Связывание структур для организации списка
-//     for(long int i = 0; i < sumOfRows - 1; i++)
+//     for(unsigned long int i = 0; i < sumOfRows - 1; i++)
 //     {
 //         persons[i].link = &persons[i+1];
 //     }
@@ -228,21 +229,21 @@ int main(int argc, char *argv[])
     
 // // поиск среднего через связанный список
 //     struct person *personsPointer = &persons[0];
-//     long long int sum = 0;
+//     unsigned long long int sum = 0;
 //     while(personsPointer != NULL)
 //     {
 //         sum += personsPointer->age;
 //         personsPointer = personsPointer->link;
 //     }
-//     float middleAge = sum / (float)sumOfRows;
+//     float middleAge = sum / (double)sumOfRows;
 //     // middleAge =378/12.0;
 //     printf("Средний возраст(лет): %.2f \n", middleAge);
 
 
 //сортировка
-    for(long int i = 0; i < sumOfRows-1; i++)
+    for(unsigned long int i = 0; i < sumOfRows-1; i++)
     {
-        for(long int j = i + 1; j < sumOfRows; j++)
+        for(unsigned long int j = i + 1; j < sumOfRows; j++)
         {
             if((persons[i].id > persons[j].id) && cases == 1)
             {
@@ -280,12 +281,12 @@ int main(int argc, char *argv[])
         printf("fwopen opened\n");
     }
 
-    for(long int i = 0; i < sumOfRows; i++)
+    for(unsigned long int i = 0; i < sumOfRows; i++)
     {   
         if(i == 0) fprintf(fpw,"id,name,age,address,zipcode\n");
 
-        if(i != (sumOfRows - 1)) fprintf(fpw,"%d,%s,%d,%s,%ld\n", persons[i].id, persons[i].name, persons[i].age, persons[i].address, persons[i].zipcode);
-        if(i == (sumOfRows - 1)) fprintf(fpw,"%d,%s,%d,%s,%ld", persons[i].id, persons[i].name, persons[i].age, persons[i].address, persons[i].zipcode);
+        if(i != (sumOfRows - 1)) fprintf(fpw,"%lld,%s,%d,%s,%ld\n", persons[i].id, persons[i].name, persons[i].age, persons[i].address, persons[i].zipcode);
+        if(i == (sumOfRows - 1)) fprintf(fpw,"%lld,%s,%d,%s,%ld", persons[i].id, persons[i].name, persons[i].age, persons[i].address, persons[i].zipcode);
     }
 
     fclose(fpw);
@@ -296,9 +297,10 @@ int main(int argc, char *argv[])
     return 0;
 }
 
-long int getFileLineSize(char* file_name)
+// Подсчет количества строк в файле
+unsigned long int getFileLineSize(char* file_name)
 {
-    long int sumOfRows = 0;
+    unsigned long int sumOfRows = 0;
     char ch;
 	
     FILE* fd = fopen(file_name, "r");
@@ -319,7 +321,8 @@ long int getFileLineSize(char* file_name)
     return sumOfRows;
 }
 
-void xchange(struct person *persons, long int i, long int j)
+// Повторяющийся код сотировки
+void xchange(struct person *persons, unsigned long int i, unsigned long int j)
 {
     struct person personVar;
     personVar = persons[i];
@@ -327,16 +330,18 @@ void xchange(struct person *persons, long int i, long int j)
     persons[j] = personVar;
 }
 
+// Вывод количества строк в базе
 int callbackNumOfRows(void *sumOfRows, int colCount, char **columns, char **colNames)
 {
-    *((long int *)sumOfRows) = strtol(columns[0], NULL, 10);
+    *((unsigned long int *)sumOfRows) = strtol(columns[0], NULL, 10);
     return 0;
 }
 
+// Получение данных из базы в структуру, построчно. Функция запускается для каждой строки.
 int callbackData(void *persons, int colCount, char **columns, char **colNames)
 {
     struct person *personsInside = (struct person *) persons; // ссылка на структуру persons, нужна для преобразования void в struct
-    static long int rowCount = 0; // счетчик строк для выборки в структуру из базы данных
+    static unsigned long int rowCount = 0; // счетчик строк для выборки в структуру из базы данных
     for (int j = 0; j < colCount; j++)
     {
         if(j == 0)
