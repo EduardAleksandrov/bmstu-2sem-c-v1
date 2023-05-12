@@ -45,11 +45,11 @@ int callbackData(void*, int, char**, char**);
 int main(int argc, char *argv[])
 {
 //Выбор источника данных
-    int sourceOfData;
+    short int sourceOfData;
     printf("Нажмите 1 для выбора базы данных, нажмите 2 для файла, нажмите ноль для выхода \n");
     for(;;)
     {
-        scanf("%d", &sourceOfData);
+        scanf("%hd", &sourceOfData);
         if(sourceOfData >=0 && sourceOfData <= NUMSOURCEOFDATA) break;
         if(sourceOfData < 0 || sourceOfData > NUMSOURCEOFDATA) printf("Пункт не выбран, выберите пункт, или ноль для выхода \n");
     }
@@ -57,12 +57,12 @@ int main(int argc, char *argv[])
     if(sourceOfData == 0) exit(0);
 
 //Выбор поля для сортировки
-    int cases;
+    short int cases;
     printf("Введите цифру для сортировки поля \n");
     printf("1 - id, 2 - name, 3 - age, 4 - address, 5 - zipcode, 0 - выход\n");
     for(;;)
     {
-        scanf("%d", &cases);
+        scanf("%hd", &cases);
         if(cases >= 0 && cases <= NUMOFCASES) break;
         if(cases < 1 || cases > NUMOFCASES) printf("Пункт не выбран, выберите пункт, или ноль для выхода \n");
     }
@@ -132,11 +132,6 @@ int main(int argc, char *argv[])
     if(sourceOfData == 2)
     {
         sumOfRows = getFileLineSize(FILE_PATH_SOURCE);
-        if(sumOfRows == -1) 
-        {
-            printf("Файл для подсчета строк не открылся");
-            exit(1);
-        }
     }
 
 
@@ -301,17 +296,17 @@ int main(int argc, char *argv[])
 }
 
 // Подсчет количества строк в файле
-unsigned long int getFileLineSize(char* file_name)
+unsigned long int getFileLineSize(char *file_name)
 {
     unsigned long int sumOfRows = 0;
     char ch;
 	
-    FILE* fd = fopen(file_name, "r");
+    FILE *fd = fopen(file_name, "r");
 	
     if(fd == NULL)
     {
-        printf("frLineOpen failed\n");
-        sumOfRows = -1;
+        printf("Файл для подсчета строк не открылся\n");
+        exit(1);
     } else {
         printf("frLineOpen opened\n");
         while((ch = getc(fd)) != EOF)
