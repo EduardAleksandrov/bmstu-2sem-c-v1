@@ -21,9 +21,9 @@
 
 struct person
 {
-    unsigned long long int id;
+    unsigned long int id;
     char name[50];
-    int age;
+    unsigned short int age;
     char address[50];
     unsigned long int zipcode;
     // struct person *link;
@@ -134,8 +134,15 @@ int main(int argc, char *argv[])
         sumOfRows = getFileLineSize(FILE_PATH_SOURCE);
     }
 
+    // выход если ноль строк
+    if(sumOfRows == 0) 
+    {
+        printf("Внимание: ноль строк в файле/базе");
+        exit(0);
+    }
 
-// создание структур
+
+// создание массива структур
     struct person persons[sumOfRows];
 
 
@@ -283,8 +290,8 @@ int main(int argc, char *argv[])
     {   
         if(i == 0) fprintf(fpw,"id,name,age,address,zipcode\n");
 
-        if(i != (sumOfRows - 1)) fprintf(fpw,"%llu,%s,%d,%s,%ld\n", persons[i].id, persons[i].name, persons[i].age, persons[i].address, persons[i].zipcode);
-        if(i == (sumOfRows - 1)) fprintf(fpw,"%llu,%s,%d,%s,%ld", persons[i].id, persons[i].name, persons[i].age, persons[i].address, persons[i].zipcode);
+        if(i != (sumOfRows - 1)) fprintf(fpw,"%lu,%s,%hu,%s,%lu\n", persons[i].id, persons[i].name, persons[i].age, persons[i].address, persons[i].zipcode);
+        if(i == (sumOfRows - 1)) fprintf(fpw,"%lu,%s,%hu,%s,%lu", persons[i].id, persons[i].name, persons[i].age, persons[i].address, persons[i].zipcode);
     }
 
     fclose(fpw);
