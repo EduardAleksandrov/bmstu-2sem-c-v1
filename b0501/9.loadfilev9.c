@@ -4,7 +4,12 @@
     Загрузка данных либо из базы данных либо из файла
     Связанный список (нахождение среднего возраста) - пока закомментирован
     Дополнены исправления от преподавателя(структура через массив...)
-    Расширен диапазон до unsign long int - работает
+    Расширен диапазон до unsign long int
+    Cортировки !!!указателей на структуру - работает
+
+    Добавлены типы
+    Добавлена база данных
+    Добавлена сортировка !указателей
 */
 
 #include <stdio.h>
@@ -34,13 +39,16 @@ struct person
 unsigned long int getFileLineSize(char*);
 
 // сортировка структур
-void xchange(struct person *, unsigned long int, unsigned long int);
+void xchange(struct person**, unsigned long int, unsigned long int);
 
 // подсчет строк в базе данных (функция обратного вызова)
 int callbackNumOfRows(void*, int, char**, char**);
 
 // получение данных из базы данных (функция обратного вызова)
 int callbackData(void*, int, char**, char**);
+
+
+
 
 
 int main(int argc, char *argv[])
@@ -146,6 +154,15 @@ int main(int argc, char *argv[])
 // создание массива структур
     struct person persons[sumOfRows];
 
+// создание указателей на массив структур для сортировки
+    struct person *personsForSort[sumOfRows];
+
+    for(unsigned long int i = 0; i < sumOfRows; i++)
+    {
+        personsForSort[i] = &persons[i];
+    }
+
+
 
 // считывание данных в массив структур
     // считывание из базы
@@ -226,39 +243,18 @@ int main(int argc, char *argv[])
         fp = NULL;
     }
 
-// // Связывание структур для организации списка
-//     for(unsigned long int i = 0; i < sumOfRows - 1; i++)
-//     {
-//         persons[i].link = &persons[i+1];
-//     }
-//     persons[sumOfRows-1].link = NULL; // для последней структуры устанавливаем указатель NULL
+// Связывание структур для организации списка
+    // for(unsigned long int i = 0; i < sumOfRows - 1; i++)
+    // {
+    //     persons[i].link = &persons[i+1];
+    // }
+    // persons[sumOfRows-1].link = NULL; // для последней структуры устанавливаем указатель NULL
     
-//     for(unsigned long int i = sumOfRows-1; i > 0 ; i--)
-//     {
-//         persons[i].backlink = &persons[i-1];
-//     }
-//     persons[0].backlink = NULL;
-
-// // поиск среднего через связанный список
-//     struct person *personsPointer = &persons[0];
-
-//     while(personsPointer->backlink != NULL)
-//     {
-//         personsPointer = personsPointer->backlink;
-//     }
-    
-//     unsigned long long int sum = 0;
-//     sum += personsPointer->age;
-//     personsPointer = personsPointer->link;
-
-//     while(personsPointer != NULL)
-//     {
-//         sum += personsPointer->age;
-//         personsPointer = personsPointer->link;
-//     }
-//     float middleAge = sum / (double)sumOfRows;
-//     // middleAge =378/12.0;
-//     printf("Средний возраст(лет): %.2f \n", middleAge);
+    // // for(unsigned long int i = sumOfRows-1; i > 0 ; i--) // двусвязанный список
+    // // {
+    // //     persons[i].backlink = &persons[i-1];
+    // // }
+    // // persons[0].backlink = NULL;
 
 
 //сортировка
@@ -266,25 +262,28 @@ int main(int argc, char *argv[])
     {
         for(unsigned long int j = i + 1; j < sumOfRows; j++)
         {
-            if((persons[i].id > persons[j].id) && cases == 1)
+            if((personsForSort[i]->id > personsForSort[j]->id) && cases == 1)
             {
-                xchange(persons, i, j);
+                xchange(personsForSort, i, j);
+                // personVar = personsForSort[i];
+                // personsForSort[i] = personsForSort[j];
+                // personsForSort[j] = personVar;
             }
-            if((strcmp(persons[i].name, persons[j].name) > 0) && cases == 2)
+            if((strcmp(personsForSort[i]->name, personsForSort[j]->name) > 0) && cases == 2)
             {
-                xchange(persons, i, j);
+                xchange(personsForSort, i, j);
             }
-            if((persons[i].age > persons[j].age) && cases == 3)
+            if((personsForSort[i]->age > personsForSort[j]->age) && cases == 3)
             {
-                xchange(persons, i, j);
+                xchange(personsForSort, i, j);
             }
-            if((strcmp(persons[i].address, persons[j].address) > 0) && cases == 4)
+            if((strcmp(personsForSort[i]->address, personsForSort[j]->address) > 0) && cases == 4)
             {
-                xchange(persons, i, j);
+                xchange(personsForSort, i, j);
             }
-            if((persons[i].zipcode > persons[j].zipcode) && cases == 5)
+            if((personsForSort[i]->zipcode > personsForSort[j]->zipcode) && cases == 5)
             {
-                xchange(persons, i, j);
+                xchange(personsForSort, i, j);
             }
         }
     }
@@ -306,23 +305,41 @@ int main(int argc, char *argv[])
     {   
         if(i == 0) fprintf(fpw,"id,name,age,address,zipcode\n");
 
-        if(i != (sumOfRows - 1)) fprintf(fpw,"%lu,%s,%hu,%s,%lu\n", persons[i].id, persons[i].name, persons[i].age, persons[i].address, persons[i].zipcode);
-        if(i == (sumOfRows - 1)) fprintf(fpw,"%lu,%s,%hu,%s,%lu", persons[i].id, persons[i].name, persons[i].age, persons[i].address, persons[i].zipcode);
+        if(i != (sumOfRows - 1)) fprintf(fpw,"%lu,%s,%hu,%s,%lu\n", personsForSort[i]->id, personsForSort[i]->name, personsForSort[i]->age, personsForSort[i]->address, personsForSort[i]->zipcode);
+        if(i == (sumOfRows - 1)) fprintf(fpw,"%lu,%s,%hu,%s,%lu", personsForSort[i]->id, personsForSort[i]->name, personsForSort[i]->age, personsForSort[i]->address, personsForSort[i]->zipcode);
     }
 
     fclose(fpw);
     fpw = NULL;
+
+// поиск среднего возраста через связанный список в любом месте программы
+    // struct person *personsPointer = &persons[0];
+    // unsigned long long int sum = 0;
+
+    // while(personsPointer != NULL)
+    // {
+    //     sum += personsPointer->age;
+    //     personsPointer = personsPointer->link;
+    // }
+    // float middleAge = sum / (double)sumOfRows;
+    // // middleAge =378/12.0;
+    // printf("Средний возраст(лет): %.2f \n", middleAge);
+
 
 
 // завершение
     return 0;
 }
 
+
+
+
+
 // Подсчет количества строк в файле
 unsigned long int getFileLineSize(char *file_name)
 {
-    unsigned long int sumOfRows = 0;
-    char ch;
+    unsigned long int sumOfRows = 0; // количество строк
+    char ch; // перебор символов для поиска конца строки
 	
     FILE *fd = fopen(file_name, "r");
 	
@@ -342,13 +359,13 @@ unsigned long int getFileLineSize(char *file_name)
     return sumOfRows;
 }
 
-// Повторяющийся код сотировки
-void xchange(struct person *persons, unsigned long int i, unsigned long int j)
+// Повторяющийся код сортировки указателей
+void xchange(struct person **personsForSort, unsigned long int i, unsigned long int j)
 {
-    struct person personVar;
-    personVar = persons[i];
-    persons[i] = persons[j];
-    persons[j] = personVar;
+    struct person *personVar;
+    personVar = personsForSort[i];
+    personsForSort[i] = personsForSort[j];
+    personsForSort[j] = personVar;
 }
 
 // Вывод количества строк в базе
