@@ -22,6 +22,7 @@ int main() {
         exit(1);
     }
     
+    // выборка данных
     char *err_msg = 0;
     char *sqlNumOfRows = "SELECT Count(*) as rowsnum FROM persons";
     int numOfRows; //Вычисляем количество строк
@@ -33,6 +34,24 @@ int main() {
         sqlite3_close(db);
         exit(1);
     }
+
+    // вставка данных
+    char sqldata[180];
+    char *name = "Tom";
+    int age = 45;
+    int charNumber = sprintf (sqldata, "INSERT INTO people (name, age) VALUES ('%s', %d)", name, age);  
+
+    char *sql = sqldata;
+    result = sqlite3_exec(db, sql, 0, 0, &err_msg);
+    if (result != SQLITE_OK )
+    {
+        printf("SQL error: %s\n", err_msg);
+        sqlite3_free(err_msg);
+        sqlite3_close(db);
+        return 1;
+    }
+
+
     //printf("%d \n", numOfRows);
     // закрываем подключение
     sqlite3_close(db);
