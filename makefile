@@ -88,3 +88,6 @@ run7.stackv2:
 
 run8.callback:
 	gcc -std=c17 ./8.callbackfunc.c -o build/8.callbackfunc -g && ./build/8.callbackfunc 
+
+run9.wfile:
+	gcc -std=c17 ./9.wfile.c -o build/9.wfile -g && ./build/9.wfile 

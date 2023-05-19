@@ -75,5 +75,10 @@ char yy[] = "String22"; //размер считает
 
 printf("%ld \n", sizeof(*xx));
 
+// сколько байт указатель
+char x2 = 5;
+char *xx2 = &x2;
+printf("%ld \n", sizeof(xx2));
+
     return 0;
 }

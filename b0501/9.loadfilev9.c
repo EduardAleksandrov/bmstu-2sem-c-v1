@@ -2,7 +2,7 @@
     Task: Считывает csv файл, сортирует по выбранному столбцу, сохраняет в другой csv файл.
     Загрузка построчно (массив в динамической памяти)(выведение сортировки в функцию)(вначале ввод)
     Загрузка данных либо из базы данных либо из файла
-    Связанный список (нахождение среднего возраста) - пока закомментирован
+    Связанный список (нахождение среднего возраста)
     Дополнены исправления от преподавателя(структура через массив...)
     Расширен диапазон до unsign long int
     Cортировки !!!указателей на структуру - работает
@@ -10,6 +10,8 @@
     Добавлены типы
     Добавлена база данных
     Добавлена сортировка !указателей
+
+    Добавлен связанный список
 */
 
 #include <stdio.h>
@@ -31,7 +33,7 @@ struct person
     unsigned short int age;
     char address[50];
     unsigned long int zipcode;
-    // struct person *link;
+    struct person *link;
     // struct person *backlink;
 };
 
@@ -244,17 +246,45 @@ int main(int argc, char *argv[])
     }
 
 // Связывание структур для организации списка
-    // for(unsigned long int i = 0; i < sumOfRows - 1; i++)
-    // {
-    //     persons[i].link = &persons[i+1];
-    // }
-    // persons[sumOfRows-1].link = NULL; // для последней структуры устанавливаем указатель NULL
+    for(unsigned long int i = 0; i < sumOfRows - 1; i++)
+    {
+        persons[i].link = &persons[i+1];
+    }
+    persons[sumOfRows-1].link = NULL; // для последней структуры устанавливаем указатель NULL
     
-    // // for(unsigned long int i = sumOfRows-1; i > 0 ; i--) // двусвязанный список
-    // // {
-    // //     persons[i].backlink = &persons[i-1];
-    // // }
-    // // persons[0].backlink = NULL;
+    // for(unsigned long int i = sumOfRows-1; i > 0 ; i--) // двусвязанный список
+    // {
+    //     persons[i].backlink = &persons[i-1];
+    // }
+    // persons[0].backlink = NULL;
+
+// поиск среднего возраста через связанный список в любом месте программы
+    struct person *personsPointer = &persons[0];
+    unsigned long long int sum = 0;
+
+    while(personsPointer != NULL)
+    {
+        sum += personsPointer->age;
+        personsPointer = personsPointer->link;
+    }
+    float middleAge = sum / (double)sumOfRows;
+    // middleAge =378/12.0;
+    printf("Средний возраст(лет): %.2f \n", middleAge);
+
+//добавление еще одной структуры и поиск среднего
+    struct person personsForLink = {40, "Kate", 80, "Bakuninskaya", 112460};
+    persons[2].link = &personsForLink;
+    personsForLink.link = &persons[3];
+    
+    personsPointer = &persons[0];
+    sum = 0;
+    while(personsPointer != NULL)
+    {
+        sum += personsPointer->age;
+        personsPointer = personsPointer->link;
+    }
+    middleAge = sum / ((double)sumOfRows + 1);
+    printf("Средний возраст(лет): %.2f \n", middleAge);
 
 
 //сортировка
@@ -311,21 +341,6 @@ int main(int argc, char *argv[])
 
     fclose(fpw);
     fpw = NULL;
-
-// поиск среднего возраста через связанный список в любом месте программы
-    // struct person *personsPointer = &persons[0];
-    // unsigned long long int sum = 0;
-
-    // while(personsPointer != NULL)
-    // {
-    //     sum += personsPointer->age;
-    //     personsPointer = personsPointer->link;
-    // }
-    // float middleAge = sum / (double)sumOfRows;
-    // // middleAge =378/12.0;
-    // printf("Средний возраст(лет): %.2f \n", middleAge);
-
-
 
 // завершение
     return 0;
