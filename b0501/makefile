@@ -13,3 +13,6 @@ run.bmstu0501.v8:
 
 run.bmstu0501.v9:
 	gcc -std=c17 ./9.loadfilev9.c -lsqlite3 -o build/9.loadfilev9  && ./build/9.loadfilev9
+
+run.bmstu0501.v9.1:
+	gcc -std=c17 ./9.1.loadfilev9.c -lsqlite3 -o build/9.1.loadfilev9  && ./build/9.1.loadfilev9
