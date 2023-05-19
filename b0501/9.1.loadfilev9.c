@@ -349,19 +349,19 @@ int main(int argc, char *argv[])
     {   
         if(i == 0) fprintf(fpw,"id,name,age,address,zipcode\n");
 
-        if(i != (sumOfRows - 1)) fprintf(fpw,"%lu,%s,%hu,%s,%lu\n", personsForSort[i]->id, personsForSort[i]->name, personsForSort[i]->age, personsForSort[i]->address, personsForSort[i]->zipcode);
-        if(i == (sumOfRows - 1)) fprintf(fpw,"%lu,%s,%hu,%s,%lu", personsForSort[i]->id, personsForSort[i]->name, personsForSort[i]->age, personsForSort[i]->address, personsForSort[i]->zipcode);
+        if(i != (sumOfRows - 1)) fprintf(fpw,"%lu,%s,%hu,%s,%lu\n", (*(personsForSort + i))->id, (*(personsForSort + i))->name, (*(personsForSort + i))->age, (*(personsForSort + i))->address, (*(personsForSort + i))->zipcode);
+        if(i == (sumOfRows - 1)) fprintf(fpw,"%lu,%s,%hu,%s,%lu", (*(personsForSort + i))->id, (*(personsForSort + i))->name, (*(personsForSort + i))->age, (*(personsForSort + i))->address, (*(personsForSort + i))->zipcode);
     }
 
     fclose(fpw);
     fpw = NULL;
 
 // очистка
-    free(persons);
-    persons = NULL;
-
     free(personsForSort);
     personsForSort = NULL;
+
+    free(persons);
+    persons = NULL;
 
 // завершение
     return 0;
