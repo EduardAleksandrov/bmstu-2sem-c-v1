@@ -2,6 +2,12 @@
 #include <stdio.h>
 #include <stdlib.h>
 
+struct person
+{
+    int age;
+    char *name;
+};
+
 int main(void) 
 {
     FILE *fp;
@@ -25,6 +31,14 @@ int main(void)
         fclose(fp);
         fp = NULL;
     }
+
+    struct person tom;
+    // tom.name = "Tom";
+    tom.age = 22;
+    char str[] = "nom";
+    // tom.age = (char *) malloc(sizeof(char)*strlen);
+    // strcpy(tom.name, "Tom"); //segmentation fault
+    printf("Name:%s Age: %d , %d", tom.name, tom.age, sizeof(str));
 
 
     return 0;

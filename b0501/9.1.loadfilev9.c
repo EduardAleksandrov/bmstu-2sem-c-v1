@@ -174,7 +174,7 @@ int main(int argc, char *argv[])
 
     for(unsigned long int i = 0; i < sumOfRows; i++)
     {
-        *(personsForSort + i) = &*(persons + i);
+        *(personsForSort + i) = (persons + i);
     }
 
 
@@ -261,7 +261,7 @@ int main(int argc, char *argv[])
 // Связывание структур для организации списка
     for(unsigned long int i = 0; i < sumOfRows - 1; i++)
     {
-        (persons + i)->link = &*(persons + i + 1);
+        (persons + i)->link = (persons + i + 1);
     }
     (persons + sumOfRows - 1)->link = NULL; // для последней структуры устанавливаем указатель NULL
     
@@ -287,7 +287,7 @@ int main(int argc, char *argv[])
 //добавление еще одной структуры и поиск среднего
     struct person personsForLink = {40, "Kate", 80, "Bakuninskaya", 112460};
     (persons+1)->link = &personsForLink;
-    personsForLink.link = &*(persons + 2);
+    personsForLink.link = (persons + 2);
     
     personsPointer = persons;
     sum = 0;
