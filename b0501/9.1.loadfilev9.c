@@ -20,6 +20,7 @@
 #include <stdlib.h>
 #include <string.h>
 #include <sqlite3.h>
+#include <time.h>
 
 #define FILE_PATH_SOURCE "../10.generator.csv"
 #define FILE_PATH_TARGET "./wtest.csv"
@@ -103,7 +104,10 @@ int main(int argc, char *argv[])
     }
     // Выход, если выбран ноль
     if(cases == 0) exit(0);
-    
+
+// запуск расчета времени работы программы
+    clock_t begin = clock();
+
 // подсчет строк
     unsigned long int sumOfRows; //количество строк
     // из базы
@@ -361,6 +365,11 @@ int main(int argc, char *argv[])
 
     free(persons);
     persons = NULL;
+
+//время работы программы
+    clock_t end = clock();
+    double time_spent = (double)(end - begin) / CLOCKS_PER_SEC;
+    printf("The elapsed time is %f seconds \n", time_spent);
 
 // завершение
     return 0;
