@@ -91,3 +91,6 @@ run8.callback:
 
 run9.wfile:
 	gcc -std=c17 ./9.wfile.c -o build/9.wfile -g && ./build/9.wfile 
+
+run10.generator:
+	gcc -std=c17 ./10.generator.c -o build/10.generator -g && ./build/10.generator 

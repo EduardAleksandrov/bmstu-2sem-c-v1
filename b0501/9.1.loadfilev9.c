@@ -12,9 +12,8 @@
     Добавлена сортировка !указателей
 
     Добавлен связанный список
-
-    структура через динамическую память - работает
-    !для копирования не подходит
+    Структура через динамическую память
+    Работает под нагрузкой, где массив переменной длины не справляется - работает
 */
 
 #include <stdio.h>
@@ -22,7 +21,7 @@
 #include <string.h>
 #include <sqlite3.h>
 
-#define FILE_PATH_SOURCE "./testv1.csv"
+#define FILE_PATH_SOURCE "../10.generator.csv"
 #define FILE_PATH_TARGET "./wtest.csv"
 #define SIZEOFBUFF 1024 // размер строки для выборки fgets из файла
 #define DATABASE_PATH_SOURCE "./test.db"
