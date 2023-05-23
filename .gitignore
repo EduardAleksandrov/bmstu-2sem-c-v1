@@ -9,3 +9,7 @@ build
 # local env files
 .env.local
 .env.*.local
+
+# other
+wtest.csv
+10.generator.csv
