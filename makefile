@@ -94,3 +94,6 @@ run9.wfile:
 
 run10.generator:
 	gcc -std=c17 ./10.generator.c -o build/10.generator -g && ./build/10.generator 
+
+run11.getchar:
+	gcc -std=c17 ./11.getchar.c -o build/11.getchar -g && ./build/11.getchar 

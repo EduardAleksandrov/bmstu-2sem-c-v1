@@ -289,7 +289,7 @@ int main(int argc, char *argv[])
 
 //добавление еще одной структуры и поиск среднего
     struct person personsForLink = {40, "Kate", 80, "Bakuninskaya", 112460};
-    (persons+1)->link = &personsForLink;
+    (persons + 1)->link = &personsForLink;
     personsForLink.link = (persons + 2);
     
     personsPointer = persons;
