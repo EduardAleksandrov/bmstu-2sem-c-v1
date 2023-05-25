@@ -1,4 +1,4 @@
-// печать русских символов
+// генератор csv файла
 #include <stdio.h>
 #include <stdlib.h>
 #include <time.h>

@@ -14,6 +14,7 @@
     Добавлен связанный список
     Структура через динамическую память
     Работает под нагрузкой, где массив переменной длины не справляется - работает
+    Версия 2.0 - работает
 */
 
 #include <stdio.h>
@@ -428,23 +429,23 @@ int callbackData(void *persons, int colCount, char **columns, char **colNames)
     {
         if(j == 0)
         {
-            (personsInside + rowCount)->id = strtol(columns[j], NULL, 10);
+            (personsInside + rowCount)->id = strtol(*(columns + j), NULL, 10);
         }
         if(j == 1)
         {
-            strcpy((personsInside + rowCount)->name, columns[j]);
+            strcpy((personsInside + rowCount)->name, *(columns + j));
         }
         if(j == 2)
         {
-            (personsInside + rowCount)->age = strtol(columns[j], NULL, 10);
+            (personsInside + rowCount)->age = strtol(*(columns + j), NULL, 10);
         }
         if(j == 3)
         {
-            strcpy((personsInside + rowCount)->address, columns[j]);
+            strcpy((personsInside + rowCount)->address, *(columns + j));
         }
         if(j == 4)
         {
-            (personsInside + rowCount)->zipcode = strtol(columns[j], NULL, 10);
+            (personsInside + rowCount)->zipcode = strtol(*(columns + j), NULL, 10);
         }
     }
     rowCount++;

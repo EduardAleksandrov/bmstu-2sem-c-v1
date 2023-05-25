@@ -16,3 +16,6 @@ run.bmstu0501.v9:
 
 run.bmstu0501.v9.1:
 	gcc -std=c17 ./9.1.loadfilev9.c -lsqlite3 -o build/9.1.loadfilev9  && ./build/9.1.loadfilev9
+
+run.bmstu0501.v10:
+	gcc -std=c17 ./10.loadfilev10.c -lsqlite3 -o build/10.loadfilev10  && ./build/10.loadfilev10

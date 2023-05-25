@@ -12,15 +12,18 @@
     Добавлена сортировка !указателей
 
     Добавлен связанный список
-    Под нагрузкой более 50000 строк не работает
-    Версия 1.0 - работает
-    !не копировать далее
+    Структура через динамическую память
+    Работает под нагрузкой, где массив переменной длины не справляется
+    
+    заменили массивы на указатели в структуре для сохранения памяти - работает
+    Версия 2.1 - работает
 */
 
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
 #include <sqlite3.h>
+#include <time.h>
 
 #define FILE_PATH_SOURCE "../10.generator.csv"
 #define FILE_PATH_TARGET "./wtest.csv"
@@ -32,9 +35,9 @@
 struct person
 {
     unsigned long int id;
-    char name[50];
+    char *name;
     unsigned short int age;
-    char address[50];
+    char *address;
     unsigned long int zipcode;
     struct person *link;
     // struct person *backlink;
@@ -52,6 +55,11 @@ int callbackNumOfRows(void*, int, char**, char**);
 // получение данных из базы данных (функция обратного вызова)
 int callbackData(void*, int, char**, char**);
 
+// расчет длины строки name, address
+unsigned short int lenChar(char*);
+
+// копирование строки
+void copyStr(char*, char*);
 
 
 
@@ -104,7 +112,10 @@ int main(int argc, char *argv[])
     }
     // Выход, если выбран ноль
     if(cases == 0) exit(0);
-    
+
+// запуск расчета времени работы программы
+    clock_t begin = clock();
+
 // подсчет строк
     unsigned long int sumOfRows; //количество строк
     // из базы
@@ -157,14 +168,24 @@ int main(int argc, char *argv[])
 
 
 // создание массива структур
-    struct person persons[sumOfRows];
+    // struct person persons[sumOfRows];
+    struct person *persons = (struct person *) malloc(sizeof(struct person) * sumOfRows);
+    if (persons == NULL) {
+        printf("Память не выделена, ошибка");
+        exit(1);
+    }
 
 // создание указателей на массив структур для сортировки
-    struct person *personsForSort[sumOfRows];
+    // struct person *personsForSort[sumOfRows];
+    struct person **personsForSort = (struct person **) malloc(sizeof(struct person *) * sumOfRows);
+    if (personsForSort == NULL) {
+        printf("Память не выделена, ошибка");
+        exit(1);
+    }
 
     for(unsigned long int i = 0; i < sumOfRows; i++)
     {
-        personsForSort[i] = &persons[i];
+        *(personsForSort + i) = (persons + i);
     }
 
 
@@ -229,16 +250,23 @@ int main(int argc, char *argv[])
             field_count = 0;
             if(row_count < 2) row_count++;
             if(row_count == 1) continue;
-
             char *field = strtok(buff, ","); // выбор первого столбца
             while(field)
             {
-                if(field_count == 0) persons[i].id = strtol(field, NULL, 10); // т.к. мы обращаемся к указателю через индексацию массива, то точка, а не стрелка
-                if(field_count == 1) strcpy(persons[i].name, field);
-                if(field_count == 2) persons[i].age = strtol(field, NULL, 10);
-                if(field_count == 3) strcpy(persons[i].address, field);
-                if(field_count == 4) persons[i].zipcode = strtol(field, NULL, 10);
-
+                if(field_count == 0) (persons + i)->id = strtol(field, NULL, 10); // т.к. мы обращаемся к указателю через индексацию массива, то точка, а не стрелка
+                if(field_count == 1) 
+                {
+                    (persons + i)->name = (char *) malloc(sizeof(char) * lenChar(field));
+                    copyStr((persons + i)->name, field);
+                }
+                if(field_count == 2) (persons + i)->age = strtol(field, NULL, 10);
+                if(field_count == 3)
+                {
+                    (persons + i)->address = (char *) malloc(sizeof(char) * lenChar(field));
+                    copyStr((persons + i)->address, field);
+                }
+                if(field_count == 4) (persons + i)->zipcode = strtol(field, NULL, 10);
+                
                 field = strtok(NULL, ","); // выбор последующего столбца
                 field_count++;
             }
@@ -248,21 +276,22 @@ int main(int argc, char *argv[])
         fp = NULL;
     }
 
+    
 // Связывание структур для организации списка
     for(unsigned long int i = 0; i < sumOfRows - 1; i++)
     {
-        persons[i].link = &persons[i+1];
+        (persons + i)->link = (persons + i + 1);
     }
-    persons[sumOfRows-1].link = NULL; // для последней структуры устанавливаем указатель NULL
+    (persons + sumOfRows - 1)->link = NULL; // для последней структуры устанавливаем указатель NULL
     
-//     // for(unsigned long int i = sumOfRows-1; i > 0 ; i--) // двусвязанный список
-//     // {
-//     //     persons[i].backlink = &persons[i-1];
-//     // }
-//     // persons[0].backlink = NULL;
+    // for(unsigned long int i = sumOfRows-1; i > 0 ; i--) // двусвязанный список
+    // {
+    //     persons[i].backlink = &persons[i-1];
+    // }
+    // persons[0].backlink = NULL;
 
 // поиск среднего возраста через связанный список в любом месте программы
-    struct person *personsPointer = &persons[0];
+    struct person *personsPointer = persons;
     unsigned long long int sum = 0;
 
     while(personsPointer != NULL)
@@ -276,10 +305,10 @@ int main(int argc, char *argv[])
 
 //добавление еще одной структуры и поиск среднего
     struct person personsForLink = {40, "Kate", 80, "Bakuninskaya", 112460};
-    persons[2].link = &personsForLink;
-    personsForLink.link = &persons[3];
+    (persons + 1)->link = &personsForLink;
+    personsForLink.link = (persons + 2);
     
-    personsPointer = &persons[0];
+    personsPointer = persons;
     sum = 0;
     while(personsPointer != NULL)
     {
@@ -290,37 +319,38 @@ int main(int argc, char *argv[])
     printf("Средний возраст(лет): %.2f \n", middleAge);
 
 
+
 //сортировка
     for(unsigned long int i = 0; i < sumOfRows-1; i++)
     {
         for(unsigned long int j = i + 1; j < sumOfRows; j++)
         {
-            if((personsForSort[i]->id > personsForSort[j]->id) && cases == 1)
+            if(((*(personsForSort + i))->id > (*(personsForSort + j))->id) && cases == 1)
             {
                 xchange(personsForSort, i, j);
-                // personVar = personsForSort[i];
-                // personsForSort[i] = personsForSort[j];
-                // personsForSort[j] = personVar;
+                // struct person *personVar;
+                // personVar = *(personsForSort + i);
+                // *(personsForSort + i) = *(personsForSort + j);
+                // *(personsForSort + j) = personVar;  
             }
-            if((strcmp(personsForSort[i]->name, personsForSort[j]->name) > 0) && cases == 2)
-            {
-                xchange(personsForSort, i, j);
-            }
-            if((personsForSort[i]->age > personsForSort[j]->age) && cases == 3)
+            if((strcmp((*(personsForSort + i))->name, (*(personsForSort+j))->name) > 0) && cases == 2)
             {
                 xchange(personsForSort, i, j);
             }
-            if((strcmp(personsForSort[i]->address, personsForSort[j]->address) > 0) && cases == 4)
+            if(((*(personsForSort + i))->age > (*(personsForSort + j))->age) && cases == 3)
             {
                 xchange(personsForSort, i, j);
             }
-            if((personsForSort[i]->zipcode > personsForSort[j]->zipcode) && cases == 5)
+            if((strcmp((*(personsForSort + i))->address, (*(personsForSort + j))->address) > 0) && cases == 4)
+            {
+                xchange(personsForSort, i, j);
+            }
+            if(((*(personsForSort + i))->zipcode > (*(personsForSort + j))->zipcode) && cases == 5)
             {
                 xchange(personsForSort, i, j);
             }
         }
     }
-
 // запись в файл
     FILE *fpw;
     fpw = fopen(FILE_PATH_TARGET, "w");
@@ -338,12 +368,31 @@ int main(int argc, char *argv[])
     {   
         if(i == 0) fprintf(fpw,"id,name,age,address,zipcode\n");
 
-        if(i != (sumOfRows - 1)) fprintf(fpw,"%lu,%s,%hu,%s,%lu\n", personsForSort[i]->id, personsForSort[i]->name, personsForSort[i]->age, personsForSort[i]->address, personsForSort[i]->zipcode);
-        if(i == (sumOfRows - 1)) fprintf(fpw,"%lu,%s,%hu,%s,%lu", personsForSort[i]->id, personsForSort[i]->name, personsForSort[i]->age, personsForSort[i]->address, personsForSort[i]->zipcode);
+        if(i != (sumOfRows - 1)) fprintf(fpw,"%lu,%s,%hu,%s,%lu\n", (*(personsForSort + i))->id, (*(personsForSort + i))->name, (*(personsForSort + i))->age, (*(personsForSort + i))->address, (*(personsForSort + i))->zipcode);
+        if(i == (sumOfRows - 1)) fprintf(fpw,"%lu,%s,%hu,%s,%lu", (*(personsForSort + i))->id, (*(personsForSort + i))->name, (*(personsForSort + i))->age, (*(personsForSort + i))->address, (*(personsForSort + i))->zipcode);
     }
 
     fclose(fpw);
     fpw = NULL;
+
+// очистка
+    free(personsForSort);
+    personsForSort = NULL;
+
+    for(unsigned long int i = 0; i < sumOfRows; i++)
+    {
+        free((persons + i)->name);
+        free((persons + i)->address);
+    }
+
+    free(persons);
+    persons = NULL;
+
+
+//время работы программы
+    clock_t end = clock();
+    double time_spent = (double)(end - begin) / CLOCKS_PER_SEC;
+    printf("The elapsed time is %f seconds \n", time_spent);
 
 // завершение
     return 0;
@@ -381,9 +430,9 @@ unsigned long int getFileLineSize(char *file_name)
 void xchange(struct person **personsForSort, unsigned long int i, unsigned long int j)
 {
     struct person *personVar;
-    personVar = personsForSort[i];
-    personsForSort[i] = personsForSort[j];
-    personsForSort[j] = personVar;
+    personVar = *(personsForSort + i);
+    *(personsForSort + i) = *(personsForSort + j);
+    *(personsForSort + j) = personVar;
 }
 
 // Вывод количества строк в базе
@@ -402,25 +451,49 @@ int callbackData(void *persons, int colCount, char **columns, char **colNames)
     {
         if(j == 0)
         {
-            (personsInside + rowCount)->id = strtol(columns[j], NULL, 10);
+            (personsInside + rowCount)->id = strtol(*(columns + j), NULL, 10);
         }
         if(j == 1)
         {
-            strcpy((personsInside + rowCount)->name, columns[j]);
+            (personsInside + rowCount)->name = (char *) malloc(sizeof(char) * lenChar(*(columns + j)));
+            copyStr((personsInside + rowCount)->name, *(columns + j));
         }
         if(j == 2)
         {
-            (personsInside + rowCount)->age = strtol(columns[j], NULL, 10);
+            (personsInside + rowCount)->age = strtol(*(columns + j), NULL, 10);
         }
         if(j == 3)
         {
-            strcpy((personsInside + rowCount)->address, columns[j]);
+            (personsInside + rowCount)->address = (char *) malloc(sizeof(char) * lenChar(*(columns + j)));
+            copyStr((personsInside + rowCount)->address, *(columns + j));
         }
         if(j == 4)
         {
-            (personsInside + rowCount)->zipcode = strtol(columns[j], NULL, 10);
+            (personsInside + rowCount)->zipcode = strtol(*(columns + j), NULL, 10);
         }
     }
     rowCount++;
     return 0;
 }
+
+// расчет длины строки name, address
+unsigned short int lenChar(char *from)
+{
+    int i = 0;
+    while(*(from + i) != '\0')
+    {
+        i++;
+    }
+    return i + 1;
+}
+
+// копирование строки
+void copyStr(char *to, char *from)
+{
+    int i = 0;
+    while((*(to + i) = *(from + i)) != '\0')
+    {
+        i++;
+    }
+}
+
