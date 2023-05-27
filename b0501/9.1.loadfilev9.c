@@ -261,7 +261,7 @@ int main(int argc, char *argv[])
         fclose(fp);
         fp = NULL;
     }
-
+// Список - start
 // Связывание структур для организации списка
     for(unsigned long int i = 0; i < sumOfRows - 1; i++)
     {
@@ -289,10 +289,32 @@ int main(int argc, char *argv[])
     printf("Средний возраст(лет): %.2f \n", middleAge);
 
 //добавление еще одной структуры и поиск среднего
+    // первая
     struct person personsForLink = {40, "Kate", 80, "Bakuninskaya", 112460};
     (persons + 1)->link = &personsForLink;
     personsForLink.link = (persons + 2);
+
+    // вторая
+    struct person *personForLinkPointer;
+    personForLinkPointer = (struct person*) malloc(sizeof(struct person));
+    personForLinkPointer->id = 41;
+    strcpy(personForLinkPointer->name , "Ellen");
+    personForLinkPointer->age = 50;
+    strcpy(personForLinkPointer->address , "Volhovo");
+    personForLinkPointer->zipcode = 634874;
+    (persons + 5)->link = personForLinkPointer;
+    personForLinkPointer->link = (persons + 6);
+
+    //третья
+    (persons + sumOfRows - 1)->link = (struct person*) malloc(sizeof(struct person));
+    (persons + sumOfRows - 1)->link->id = 42;
+    strcpy((persons + sumOfRows - 1)->link->name , "Tomas");
+    (persons + sumOfRows - 1)->link->age = 60;
+    strcpy((persons + sumOfRows - 1)->link->address , "Bocharovo");
+    (persons + sumOfRows - 1)->link->zipcode = 464732;
+    (persons + sumOfRows - 1)->link->link = NULL;
     
+    //расчет среднего возраста
     personsPointer = persons;
     sum = 0;
     while(personsPointer != NULL)
@@ -300,8 +322,9 @@ int main(int argc, char *argv[])
         sum += personsPointer->age;
         personsPointer = personsPointer->link;
     }
-    middleAge = sum / ((double)sumOfRows + 1);
+    middleAge = sum / ((double)sumOfRows + 3);
     printf("Средний возраст(лет): %.2f \n", middleAge);
+// Список - end
 
 
 //сортировка
@@ -361,6 +384,11 @@ int main(int argc, char *argv[])
     fpw = NULL;
 
 // очистка
+
+    // очистка
+    free(personForLinkPointer);
+    free((persons + sumOfRows - 1)->link);
+
     free(personsForSort);
     personsForSort = NULL;
 

@@ -68,46 +68,46 @@ int main(int argc, char *argv[])
 {
 //Выбор источника данных
     short int sourceOfData;
-    printf("Нажмите 1 для выбора базы данных, нажмите 2 для файла, нажмите ноль для выхода \n");
+    puts("Нажмите 1 для выбора базы данных, нажмите 2 для файла, нажмите ноль для выхода");
     for(;;)
     {
         scanf("%hd", &sourceOfData);
         if(sourceOfData >=0 && sourceOfData <= NUMSOURCEOFDATA) break;
-        if(sourceOfData < 0 || sourceOfData > NUMSOURCEOFDATA) printf("Пункт не выбран, выберите пункт, или ноль для выхода \n");
+        if(sourceOfData < 0 || sourceOfData > NUMSOURCEOFDATA) puts("Пункт не выбран, выберите пункт, или ноль для выхода");
     }
     // Выход, если выбран ноль
     if(sourceOfData == 0) exit(0);
 
 //Выбор поля для сортировки
     short int cases;
-    printf("Введите цифру для сортировки поля \n");
-    printf("1 - id, 2 - name, 3 - age, 4 - address, 5 - zipcode, 0 - выход\n");
+    puts("Введите цифру для сортировки поля");
+    puts("1 - id, 2 - name, 3 - age, 4 - address, 5 - zipcode, 0 - выход");
     for(;;)
     {
         scanf("%hd", &cases);
         if(cases >= 0 && cases <= NUMOFCASES) break;
-        if(cases < 1 || cases > NUMOFCASES) printf("Пункт не выбран, выберите пункт, или ноль для выхода \n");
+        if(cases < 1 || cases > NUMOFCASES) puts("Пункт не выбран, выберите пункт, или ноль для выхода");
     }
 
     switch(cases)
     {
         case 1: 
-            printf("Выбран id \n");
+            puts("Выбран id");
             break;
         case 2: 
-            printf("Выбран name \n");
+            puts("Выбран name");
             break;
         case 3:
-            printf("Выбран age \n");
+            puts("Выбран age");
             break;
         case 4: 
-            printf("Выбран address \n");
+            puts("Выбран address");
             break;
         case 5: 
-            printf("Выбран zipcode \n");
+            puts("Выбран zipcode");
             break;
         default: 
-            printf("Пункт не выбран \n");
+            puts("Пункт не выбран");
             break;
     }
     // Выход, если выбран ноль
@@ -127,7 +127,7 @@ int main(int argc, char *argv[])
         // если подключение успешно установлено
         if(result == SQLITE_OK) 
         {
-            printf("Connection with database established\n");
+            puts("Connection with database established");
         }
         else
         {
@@ -162,7 +162,7 @@ int main(int argc, char *argv[])
     // выход если ноль строк
     if(sumOfRows == 0) 
     {
-        printf("Внимание: ноль строк в файле/базе");
+        puts("Внимание: ноль строк в файле/базе");
         exit(0);
     }
 
@@ -171,7 +171,7 @@ int main(int argc, char *argv[])
     // struct person persons[sumOfRows];
     struct person *persons = (struct person *) malloc(sizeof(struct person) * sumOfRows);
     if (persons == NULL) {
-        printf("Память не выделена, ошибка");
+        puts("Память не выделена, ошибка");
         exit(1);
     }
 
@@ -179,7 +179,7 @@ int main(int argc, char *argv[])
     // struct person *personsForSort[sumOfRows];
     struct person **personsForSort = (struct person **) malloc(sizeof(struct person *) * sumOfRows);
     if (personsForSort == NULL) {
-        printf("Память не выделена, ошибка");
+        puts("Память не выделена, ошибка");
         exit(1);
     }
 
@@ -200,7 +200,7 @@ int main(int argc, char *argv[])
         // если подключение успешно установлено
         if(getData == SQLITE_OK) 
         {
-            printf("Connection with database established\n");
+            puts("Connection with database established");
         }
         else
         {
@@ -238,7 +238,7 @@ int main(int argc, char *argv[])
             perror("fropen failed ");
             exit(1);
         } else {
-            printf("fropen opened\n");
+            puts("fropen opened");
         }
 
         char buff[SIZEOFBUFF]; // размер считываемой строки
@@ -276,7 +276,7 @@ int main(int argc, char *argv[])
         fp = NULL;
     }
 
-    
+// Список - start
 // Связывание структур для организации списка
     for(unsigned long int i = 0; i < sumOfRows - 1; i++)
     {
@@ -308,6 +308,39 @@ int main(int argc, char *argv[])
     (persons + 1)->link = &personsForLink;
     personsForLink.link = (persons + 2);
     
+    // вторая
+    struct person *personForLinkPointer;
+    personForLinkPointer = (struct person*) malloc(sizeof(struct person));
+    personForLinkPointer->id = 41;
+
+    personForLinkPointer->name = (char *) malloc(sizeof(char) * lenChar("Ellen"));
+    copyStr(personForLinkPointer->name, "Ellen");
+
+    personForLinkPointer->age = 50;
+
+    personForLinkPointer->address = (char *) malloc(sizeof(char) * lenChar("Volhovo"));
+    copyStr(personForLinkPointer->address, "Volhovo");
+
+    personForLinkPointer->zipcode = 634874;
+    (persons + 5)->link = personForLinkPointer;
+    personForLinkPointer->link = (persons + 6);
+
+    //третья
+    (persons + sumOfRows - 1)->link = (struct person*) malloc(sizeof(struct person));
+    (persons + sumOfRows - 1)->link->id = 42;
+
+    (persons + sumOfRows - 1)->link->name = (char *) malloc(sizeof(char) * lenChar("Tomas"));
+    copyStr((persons + sumOfRows - 1)->link->name, "Tomas");
+
+    (persons + sumOfRows - 1)->link->age = 60;
+    
+    (persons + sumOfRows - 1)->link->address = (char *) malloc(sizeof(char) * lenChar("Bocharovo"));
+    copyStr((persons + sumOfRows - 1)->link->address, "Bocharovo");
+
+    (persons + sumOfRows - 1)->link->zipcode = 464732;
+    (persons + sumOfRows - 1)->link->link = NULL;
+
+    //расчет среднего возраста
     personsPointer = persons;
     sum = 0;
     while(personsPointer != NULL)
@@ -315,9 +348,10 @@ int main(int argc, char *argv[])
         sum += personsPointer->age;
         personsPointer = personsPointer->link;
     }
-    middleAge = sum / ((double)sumOfRows + 1);
+    middleAge = sum / ((double)sumOfRows + 3);
     printf("Средний возраст(лет): %.2f \n", middleAge);
 
+// Список - end
 
 
 //сортировка
@@ -361,7 +395,7 @@ int main(int argc, char *argv[])
         perror("fwopen failed ");
         exit(1);
     } else {
-        printf("fwopen opened\n");
+        puts("fwopen opened");
     }
 
     for(unsigned long int i = 0; i < sumOfRows; i++)
@@ -376,6 +410,14 @@ int main(int argc, char *argv[])
     fpw = NULL;
 
 // очистка
+    free(personForLinkPointer->name);
+    free(personForLinkPointer->address);
+    free(personForLinkPointer);
+
+    free((persons + sumOfRows - 1)->link->name);
+    free((persons + sumOfRows - 1)->link->address);
+    free((persons + sumOfRows - 1)->link);
+
     free(personsForSort);
     personsForSort = NULL;
 
@@ -412,10 +454,10 @@ unsigned long int getFileLineSize(char *file_name)
 	
     if(fd == NULL)
     {
-        printf("Файл для подсчета строк не открылся\n");
+        puts("Файл для подсчета строк не открылся");
         exit(1);
     } else {
-        printf("frLineOpen opened\n");
+        puts("frLineOpen opened");
         while((ch = getc(fd)) != EOF)
         {
             if (ch == '\n') sumOfRows++;
