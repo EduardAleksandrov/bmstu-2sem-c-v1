@@ -100,3 +100,6 @@ run11.getchar:
 
 run12.enum:
 	gcc -std=c17 ./12.enum.c -o build/12.enum -g && ./build/12.enum 
+
+run13.wchar:
+	gcc -std=c17 ./13.wchar.c -o build/13.wchar -g && ./build/13.wchar 
