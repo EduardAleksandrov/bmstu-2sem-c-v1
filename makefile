@@ -97,3 +97,6 @@ run10.generator:
 
 run11.getchar:
 	gcc -std=c17 ./11.getchar.c -o build/11.getchar -g && ./build/11.getchar 
+
+run12.enum:
+	gcc -std=c17 ./12.enum.c -o build/12.enum -g && ./build/12.enum 

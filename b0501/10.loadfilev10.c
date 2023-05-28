@@ -351,6 +351,20 @@ int main(int argc, char *argv[])
     middleAge = sum / ((double)sumOfRows + 3);
     printf("Средний возраст(лет): %.2f \n", middleAge);
 
+    // очистка
+    free(personForLinkPointer->name);
+    personForLinkPointer->name = NULL;
+    free(personForLinkPointer->address);
+    personForLinkPointer->address = NULL;
+    free(personForLinkPointer);
+    personForLinkPointer = NULL;
+
+    free((persons + sumOfRows - 1)->link->name);
+    (persons + sumOfRows - 1)->link->name = NULL;
+    free((persons + sumOfRows - 1)->link->address);
+    (persons + sumOfRows - 1)->link->address = NULL;
+    free((persons + sumOfRows - 1)->link);
+    (persons + sumOfRows - 1)->link = NULL;
 // Список - end
 
 
@@ -410,14 +424,6 @@ int main(int argc, char *argv[])
     fpw = NULL;
 
 // очистка
-    free(personForLinkPointer->name);
-    free(personForLinkPointer->address);
-    free(personForLinkPointer);
-
-    free((persons + sumOfRows - 1)->link->name);
-    free((persons + sumOfRows - 1)->link->address);
-    free((persons + sumOfRows - 1)->link);
-
     free(personsForSort);
     personsForSort = NULL;
 
