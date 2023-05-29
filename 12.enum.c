@@ -1,5 +1,6 @@
 // enum, union
 #include <stdio.h>
+#include <stdlib.h>
 
 enum operation // арифметическая операция
 {
@@ -31,6 +32,15 @@ int main(void)
     funion.y = 0.5;
     printf("%.2f \n", funion.y);
 
-    
+
+    // !вопрос можно ли удалить указатель на структуру таким образом?
+    int *structure = malloc(sizeof(int));
+    int *pstruct = structure;
+
+    free(pstruct);
+    pstruct = NULL;
+    *structure = 2;
+    printf("%d \n", *structure);
+
     return 0;
 }
