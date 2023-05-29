@@ -104,5 +104,8 @@ run12.enum:
 run13.wchar:
 	gcc -std=c17 ./13.wchar.c -o build/13.wchar -g && ./build/13.wchar 
 
-run14.sergo:
-	gcc -std=c17 ./14.sergo-func.c -o build/14.sergo-func -g && ./build/14.sergo-func 
+run13.uchar:
+	gcc -std=c17 ./13.uchar.c -o build/13.uchar -g && ./build/13.uchar 
+
+run14.serg:
+	gcc -std=c17 ./14.serg-func.c -o build/14.serg-func -g && ./build/14.serg-func 
