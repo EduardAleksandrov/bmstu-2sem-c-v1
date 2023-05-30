@@ -109,3 +109,6 @@ run13.uchar:
 
 run14.serg:
 	gcc -std=c17 ./14.serg-func.c -o build/14.serg-func -g && ./build/14.serg-func 
+
+run15.bitwiseop:
+	gcc -std=c17 ./15.bitwiseop.c -o build/15.bitwiseop -g && ./build/15.bitwiseop
