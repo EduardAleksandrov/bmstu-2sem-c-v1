@@ -57,6 +57,17 @@ int main(void)
     free(convert);
 // end
 
+// Преобразование символа в число, как в ассемблере
+    //символ в число
+    char str;
+    scanf(" %c", &str);
+    printf("Число из символа: %d \n", str - '0');
+    //символ из числа
+    int number;
+    scanf(" %d", &number);
+    printf("Символ из числа: %c \n", number + '0');
+// end
+
 
     return 0;
 }
