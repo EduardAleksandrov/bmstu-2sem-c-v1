@@ -112,3 +112,6 @@ run14.serg:
 
 run15.bitwiseop:
 	gcc -std=c17 ./15.bitwiseop.c -o build/15.bitwiseop -g && ./build/15.bitwiseop
+
+run16.memory:
+	gcc -std=c17 ./16.memory.c -o build/16.memory -g && ./build/16.memory
