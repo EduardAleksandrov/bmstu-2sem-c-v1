@@ -14,12 +14,12 @@ struct clients
     struct clients *next;
 };
 
-void addClientEnd(struct clients **);
-void printClients(struct clients **);
+void addClientEnd(struct clients **); // инициализация списка
+void printClients(struct clients **); // печать списка
 
-void addClientMiddle(struct clients **, unsigned long int);
-void dellClient(struct clients **, unsigned long int);
-
+void addClient(struct clients **, unsigned long int); //  добавление в середину или конец
+void dellClient(struct clients **, unsigned long int); 
+void addClientfFirst(struct clients **); // добавление первым элементом
 
 int main(void)
 {
@@ -28,17 +28,18 @@ int main(void)
     wchar_t simbolOne, simbolTwo;
     for(;;)
     {
-        puts("|.1.Для добавления новой структуры или добавления в конец");
-        puts("  2.для добавления в начало, середину или конец");
-        puts("  3.для удаления");
-        puts("  4.для печати");
+        puts("|.1.Для добавления новой структуры или добавления в конец или второй(после первой)");
+        puts("  2.для добавления в середину или конец");
+        puts("  3.для добавления в начало");
+        puts("  4.для удаления");
+        puts("  5.для печати");
         puts("  0.для выхода ноль");
         scanf(" %lc", &simbolOne);
         if(simbolOne == '1')
         {
             for(;;)
             {
-                puts("||.Для ввода текущей структуры нажмите любую клавишу или ноль для выхода");
+                puts("||.Для ввода текущей структуры нажмите любую клавишу. Выход - 0");
                 scanf(" %lc", &simbolTwo);
                 if(simbolTwo == '0')
                 {
@@ -50,16 +51,21 @@ int main(void)
         } else if(simbolOne == '2')
         {
             unsigned long int n;
-            puts("После какого id добавить элемент или первый id?");
+            puts("После какого id добавить элемент? Выход - 0");
             scanf("%ld", &n);
-            addClientMiddle(&head, n);
+            if(n == 0) continue;
+            addClient(&head, n);
         } else if(simbolOne == '3')
         {
-            unsigned long int n;
-            puts("Какой id удалить?");
-            scanf("%ld", &n);
-            dellClient(&head, n);
+            addClientfFirst(&head);
         } else if(simbolOne == '4')
+        {
+            unsigned long int n;
+            puts("Какой id удалить? Выход - 0");
+            scanf("%ld", &n);
+            if(n == 0) continue;
+            dellClient(&head, n);
+        } else if(simbolOne == '5')
         {   
             printClients(&head);
         } else if(simbolOne == '0')
@@ -70,6 +76,8 @@ int main(void)
     return 0;
 }
 
+
+// инициализация списка
 void addClientEnd(struct clients **head)
 {
     struct clients *current = *head;
@@ -102,6 +110,7 @@ void addClientEnd(struct clients **head)
     }
 }
 
+// печать списка
 void printClients(struct clients **head)
 {
     struct clients *current = *head;
@@ -113,11 +122,12 @@ void printClients(struct clients **head)
     }
 }
 
-void addClientMiddle(struct clients **head, unsigned long int lastNumber)
+// добавление клиентов
+void addClient(struct clients **head, unsigned long int lastNumber)
 {
     struct clients *current = *head;
-    unsigned long int tmpId = 1; // индекс
-    bool check = false; // проверка на существование
+    unsigned long int tmpId = 1; // новый индекс
+    bool check = false; // проверка на существование индекса
     while(current != NULL) // поиск максимального id, и проверка на существование индекса
     {
         if(current->id > tmpId) tmpId = current->id;
@@ -135,34 +145,85 @@ void addClientMiddle(struct clients **head, unsigned long int lastNumber)
     {
         current = current->next;
     }
-    if(current == *head) // добавление первой
-    {
-        current = NULL;
-        current = (struct clients*) malloc(sizeof(struct clients));
-        current->id = tmpId;
-        printf("Введите имя: ");
-        scanf(" %ls", current->name);
-        printf("Введите возраст: ");
-        scanf(" %hd", &(current->age));
-        puts("Структура добавлена");
-        current->next = *head;
-        *head = current;
-    } else { // добавление всех кроме первой
-        struct clients *tmp = current->next;
-        current->next = NULL;
-        current->next = (struct clients*) malloc(sizeof(struct clients));
-        current->next->id = tmpId;
-        printf("Введите имя: ");
-        scanf(" %ls", current->next->name);
-        printf("Введите возраст: ");
-        scanf(" %hd", &(current->next->age));
-        puts("Структура добавлена");
-        current->next->next = tmp;
-    }
-    
+     // добавление всех 
+    struct clients *tmp = current->next;
+    current->next = NULL;
+    current->next = (struct clients*) malloc(sizeof(struct clients));
+    current->next->id = tmpId;
+    printf("Введите имя: ");
+    scanf(" %ls", current->next->name);
+    printf("Введите возраст: ");
+    scanf(" %hd", &(current->next->age));
+    puts("Структура добавлена");
+    current->next->next = tmp;
 }
 
+// добавление первого клиента
+void addClientfFirst(struct clients **head) // добавление первым элементом
+{
+    struct clients *current = *head;
+    unsigned long int tmpId = 1; // новый индекс
+    while(current != NULL) // поиск максимального id
+    {
+        if(current->id > tmpId) tmpId = current->id;
+        current = current->next;
+    }
+    tmpId++;
+
+    current = NULL;
+    current = (struct clients*) malloc(sizeof(struct clients));
+    current->id = tmpId;
+    printf("Введите имя: ");
+    scanf(" %ls", current->name);
+    printf("Введите возраст: ");
+    scanf(" %hd", &(current->age));
+    puts("Структура добавлена");
+    current->next = *head;
+    *head = current;
+}
+
+// удаление клиентов
 void dellClient(struct clients **head, unsigned long int dellNumber)
 {
-    // if(dell)
+    struct clients *current = *head;
+    bool check = false; // проверка на существование индекса
+    unsigned long int lastNumber;
+    while(current != NULL) // поиск максимального id, и проверка на существование индекса
+    {
+        if(current->id == dellNumber) check = true;
+        lastNumber = current->id;
+        current = current->next;
+    }
+    if(check == false)
+    {
+        puts("Такого элемента нет");
+        return;
+    }
+    // удаление первого элемента
+    current = *head; 
+    if(dellNumber == current->id)
+    {
+        *head = current->next;
+        free(current);
+        return;
+    } 
+    // удаление последнего элемента
+    // current = *head;
+    if(dellNumber == lastNumber)
+    {
+        while(current->next->next != NULL)
+        {
+            current = current->next;
+        }
+        free(current->next);
+        current->next = NULL;
+        return;
+    }
+    // удаление по номеру
+    
+
+
+
+
+
 }
