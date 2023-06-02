@@ -1,11 +1,15 @@
+// работа со связанным списком, + локализация языка
 #include <stdio.h>
 #include <stdlib.h>
 #include <stdbool.h>
 
+#include <wchar.h>
+#include <locale.h>
+
 struct clients
 {
     unsigned long int id;
-    char name[50];
+    wchar_t name[50];
     unsigned short int age;
     struct clients *next;
 };
@@ -19,18 +23,23 @@ void dellClient(struct clients **, unsigned long int);
 
 int main(void)
 {
+    setlocale(LC_ALL, "");
     struct clients *head = NULL;
-    char simbolOne, simbolTwo;
+    wchar_t simbolOne, simbolTwo;
     for(;;)
     {
-        puts("|.Для добавления новой структуры - 1, для добавления в середину - 2, для удаления - 3, для печати - 4, для выхода ноль - 0");
-        scanf(" %c", &simbolOne);
+        puts("|.1.Для добавления новой структуры или добавления в конец");
+        puts("  2.для добавления в начало, середину или конец");
+        puts("  3.для удаления");
+        puts("  4.для печати");
+        puts("  0.для выхода ноль");
+        scanf(" %lc", &simbolOne);
         if(simbolOne == '1')
         {
             for(;;)
             {
                 puts("||.Для ввода текущей структуры нажмите любую клавишу или ноль для выхода");
-                scanf(" %c", &simbolTwo);
+                scanf(" %lc", &simbolTwo);
                 if(simbolTwo == '0')
                 {
                     break;
@@ -41,7 +50,7 @@ int main(void)
         } else if(simbolOne == '2')
         {
             unsigned long int n;
-            puts("После какого id добавить элемент?");
+            puts("После какого id добавить элемент или первый id?");
             scanf("%ld", &n);
             addClientMiddle(&head, n);
         } else if(simbolOne == '3')
@@ -58,8 +67,6 @@ int main(void)
             break;
         }
     }
-        
-
     return 0;
 }
 
@@ -71,7 +78,7 @@ void addClientEnd(struct clients **head)
     {   
         current = (struct clients *) malloc(sizeof(struct clients));
         printf("Введите имя: ");
-        scanf(" %s", current->name);
+        scanf(" %ls", current->name);
         printf("Введите возраст: ");
         scanf(" %hd", &(current->age));
         puts("Структура добавлена");
@@ -87,7 +94,7 @@ void addClientEnd(struct clients **head)
         current->next = (struct clients*) malloc(sizeof(struct clients));
         current->next->id = ++tmpId;
         printf("Введите имя: ");
-        scanf(" %s", current->next->name);
+        scanf(" %ls", current->next->name);
         printf("Введите возраст: ");
         scanf(" %hd", &(current->next->age));
         puts("Структура добавлена");
@@ -101,7 +108,7 @@ void printClients(struct clients **head)
     if(*head == NULL) puts("Нет данных");
     while(current != NULL)
     {
-        printf("id: %ld, name: %s, age: %hd \n", current->id, current->name, current->age);
+        printf("id: %ld, name: %ls, age: %hd \n", current->id, current->name, current->age);
         current = current->next;
     }
 }
@@ -128,16 +135,31 @@ void addClientMiddle(struct clients **head, unsigned long int lastNumber)
     {
         current = current->next;
     }
-    struct clients *tmp = current->next;
-    current->next = NULL;
-    current->next = (struct clients*) malloc(sizeof(struct clients));
-    current->next->id = tmpId;
-    printf("Введите имя: ");
-    scanf(" %s", current->next->name);
-    printf("Введите возраст: ");
-    scanf(" %hd", &(current->next->age));
-    puts("Структура добавлена");
-    current->next->next = tmp;
+    if(current == *head) // добавление первой
+    {
+        current = NULL;
+        current = (struct clients*) malloc(sizeof(struct clients));
+        current->id = tmpId;
+        printf("Введите имя: ");
+        scanf(" %ls", current->name);
+        printf("Введите возраст: ");
+        scanf(" %hd", &(current->age));
+        puts("Структура добавлена");
+        current->next = *head;
+        *head = current;
+    } else { // добавление всех кроме первой
+        struct clients *tmp = current->next;
+        current->next = NULL;
+        current->next = (struct clients*) malloc(sizeof(struct clients));
+        current->next->id = tmpId;
+        printf("Введите имя: ");
+        scanf(" %ls", current->next->name);
+        printf("Введите возраст: ");
+        scanf(" %hd", &(current->next->age));
+        puts("Структура добавлена");
+        current->next->next = tmp;
+    }
+    
 }
 
 void dellClient(struct clients **head, unsigned long int dellNumber)
