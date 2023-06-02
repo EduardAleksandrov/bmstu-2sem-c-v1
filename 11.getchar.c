@@ -8,7 +8,7 @@ int main(void)
     printf("%d \n", x);
 
     char nc;
-    while((nc = getchar()) != EOF)
+    while((nc = getchar()) != EOF) //считывает строку посимвольно
     // while((nc = getchar()) != '\n')
     {
         putchar(nc);
