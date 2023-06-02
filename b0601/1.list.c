@@ -220,10 +220,11 @@ void dellClient(struct clients **head, unsigned long int dellNumber)
         return;
     }
     // удаление по номеру
-    
-
-
-
-
-
+    while(current->next->id != dellNumber)
+    {
+        current = current->next;
+    }
+    struct clients *tmp = current->next->next;
+    free(current->next);
+    current->next = tmp;
 }
