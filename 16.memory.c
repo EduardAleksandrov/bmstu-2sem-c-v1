@@ -24,8 +24,8 @@ int main(void)
 
     scanf("%d", &t);
 
-    // *mainPointer = 5;
-    // printf("%d \n", *mainPointer);
+    // *(mainPointer+1) = 5;
+    // printf("%d \n", *(mainPointer+1));
 
     return 0;
 }
