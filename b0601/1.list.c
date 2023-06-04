@@ -1,4 +1,4 @@
-// работа со связанным списком, + локализация языка
+// работа со связанным списком, + локализация языка - работает
 #include <stdio.h>
 #include <stdlib.h>
 #include <stdbool.h>
@@ -19,7 +19,7 @@ void printClients(struct clients **); // печать списка
 
 void addClient(struct clients **, unsigned long int); //  добавление в середину или конец
 void deleteClient(struct clients **, unsigned long int); 
-void addClientfFirst(struct clients **); // добавление первым элементом
+void addClientFirst(struct clients **); // добавление первым элементом
 
 int main(void)
 {
@@ -57,7 +57,7 @@ int main(void)
             addClient(&head, n);
         } else if(simbolOne == '3')
         {
-            addClientfFirst(&head);
+            addClientFirst(&head);
         } else if(simbolOne == '4')
         {
             unsigned long int n;
@@ -85,6 +85,11 @@ void addClientEnd(struct clients **head)
     if(*head == NULL) // добавление первого элемента
     {   
         current = (struct clients *) malloc(sizeof(struct clients));
+        if(current == NULL)
+        {
+            puts("addClientEnd first память не выделена, ошибка");
+            exit(1);
+        }
         printf("Введите имя: ");
         scanf(" %ls", current->name);
         printf("Введите возраст: ");
@@ -100,6 +105,11 @@ void addClientEnd(struct clients **head)
             if(current->id > tmpId) tmpId = current->id;
         }
         current->next = (struct clients*) malloc(sizeof(struct clients));
+        if(current->next == NULL)
+        {
+            puts("addClientEnd память не выделена, ошибка");
+            exit(1);
+        }
         current->next->id = ++tmpId;
         printf("Введите имя: ");
         scanf(" %ls", current->next->name);
@@ -145,10 +155,15 @@ void addClient(struct clients **head, unsigned long int lastNumber)
     {
         current = current->next;
     }
-     // добавление 
+    // добавление 
     struct clients *tmp = current->next;
     current->next = NULL;
     current->next = (struct clients*) malloc(sizeof(struct clients));
+    if(current->next == NULL)
+    {
+        puts("addClient память не выделена, ошибка");
+        exit(1);
+    }
     current->next->id = tmpId;
     printf("Введите имя: ");
     scanf(" %ls", current->next->name);
@@ -159,10 +174,10 @@ void addClient(struct clients **head, unsigned long int lastNumber)
 }
 
 // добавление первого клиента
-void addClientfFirst(struct clients **head) // добавление первым элементом
+void addClientFirst(struct clients **head) // добавление первым элементом
 {
     struct clients *current = *head;
-    unsigned long int tmpId = 1; // новый индекс
+    unsigned long int tmpId = 0; // новый индекс
     while(current != NULL) // поиск максимального id
     {
         if(current->id > tmpId) tmpId = current->id;
@@ -172,6 +187,11 @@ void addClientfFirst(struct clients **head) // добавление первым
 
     current = NULL;
     current = (struct clients*) malloc(sizeof(struct clients));
+    if(current == NULL)
+    {
+        puts("addClientFirst память не выделена, ошибка");
+        exit(1);
+    }
     current->id = tmpId;
     printf("Введите имя: ");
     scanf(" %ls", current->name);
@@ -183,14 +203,14 @@ void addClientfFirst(struct clients **head) // добавление первым
 }
 
 // удаление клиентов
-void deleteClient(struct clients **head, unsigned long int dellNumber)
+void deleteClient(struct clients **head, unsigned long int deleteNumber)
 {
     struct clients *current = *head;
     bool check = false; // проверка на существование индекса
     unsigned long int lastNumber; // вычисление последнего номера в списке
     while(current != NULL) // поиск максимального id, и проверка на существование индекса, поиск последнего id
     {
-        if(current->id == dellNumber) check = true;
+        if(current->id == deleteNumber) check = true;
         lastNumber = current->id;
         current = current->next;
     }
@@ -201,12 +221,12 @@ void deleteClient(struct clients **head, unsigned long int dellNumber)
     }
 
     current = *head; 
-    if(dellNumber == current->id) // удаление первого элемента
+    if(deleteNumber == current->id) // удаление первого элемента
     {
         *head = current->next;
         free(current);
         return;
-    } else if(dellNumber == lastNumber) // удаление последнего элемента
+    } else if(deleteNumber == lastNumber) // удаление последнего элемента
     {
         while(current->next->next != NULL) // поиск предпоследнего
         {
@@ -216,7 +236,7 @@ void deleteClient(struct clients **head, unsigned long int dellNumber)
         current->next = NULL;
         return;
     } else {
-        while(current->next->id != dellNumber) // удаление по номеру, поиск предыдущего по номеру клиента
+        while(current->next->id != deleteNumber) // удаление по номеру, поиск предыдущего по номеру клиента
         {
             current = current->next;
         }
