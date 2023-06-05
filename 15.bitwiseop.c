@@ -68,6 +68,14 @@ int main(void)
     printf("Символ из числа: %c \n", number + '0');
 // end
 
+// приведение типов
+    char ch = 'A'; // приведение типов через ascii таблицу
+    int chInt = ch;
+    printf("%d \n", chInt);
+
+    int chInt2 = 65;
+    char ch2 = chInt2;
+    printf("%c \n", ch2);
 
     return 0;
 }
