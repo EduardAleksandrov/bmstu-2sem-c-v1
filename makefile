@@ -118,3 +118,6 @@ run15.bitwiseop:
 
 run16.memory:
 	gcc -std=c17 ./16.memory.c -o build/16.memory -g && ./build/16.memory
+
+run17.NasyaCode:
+	gcc -std=c17 ./17.NasyaCode.c -o build/17.NasyaCode -g && ./build/17.NasyaCode
