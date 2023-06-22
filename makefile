@@ -121,3 +121,9 @@ run16.memory:
 
 run17.NasyaCode:
 	gcc -std=c17 ./17.NasyaCode.c -o build/17.NasyaCode -g && ./build/17.NasyaCode
+
+run18.NasyaCode:
+	gcc -std=c17 ./18.NasyaCode2.c -o build/18.NasyaCode2 -g && ./build/18.NasyaCode2
+
+run19.getchar:
+	gcc -std=c17 ./19.getchar.c -o build/19.getchar -g && ./build/19.getchar

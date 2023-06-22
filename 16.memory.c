@@ -27,6 +27,15 @@ int main(void)
     // *(mainPointer+1) = 5;
     // printf("%d \n", *(mainPointer+1));
 
+
+// отладка
+    printf("отладка");
+    char character = getchar();
+    exit(0);
+
+
+
+
     return 0;
 }
 
