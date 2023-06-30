@@ -127,3 +127,6 @@ run18.NasyaCode:
 
 run19.getchar:
 	gcc -std=c17 ./19.getchar.c -o build/19.getchar -g && ./build/19.getchar
+
+run20.open:
+	gcc -std=c17 ./20.open.c -o build/20.open -g && ./build/20.open
