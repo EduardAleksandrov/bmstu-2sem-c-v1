@@ -130,3 +130,6 @@ run19.getchar:
 
 run20.open:
 	gcc -std=c17 ./20.open.c -o build/20.open -g && ./build/20.open
+
+run21.arrayinfun:
+	gcc -std=c17 ./21.arrayinfun.c -o build/21.arrayinfun -g && ./build/21.arrayinfun
