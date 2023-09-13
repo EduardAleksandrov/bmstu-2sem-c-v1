@@ -55,24 +55,23 @@ int main(void)
 
 void push(int i, int *stackBase, int **stackPointer)
 {
-    (*stackPointer)++;
     if(*stackPointer == (stackBase + SIZE)) 
     {
         printf("Stackoverflow \n");
         exit(1);
     }
     **stackPointer = i;
-    
+    (*stackPointer)++;
     // printf("%p \n", stackPointer);
     
 }
 int pop(int *stackBase, int **stackPointer)
 {
-    if((*stackPointer)+1 == stackBase)
+    if((*stackPointer) == stackBase)
     {
         printf("Стек пуст \n");
         exit(1);
     }
     (*stackPointer)--;
-    return *(*stackPointer+1);
+    return **stackPointer;
 }
