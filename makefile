@@ -133,3 +133,6 @@ run20.open:
 
 run21.arrayinfun:
 	gcc -std=c17 ./21.arrayinfun.c -o build/21.arrayinfun -g && ./build/21.arrayinfun
+
+run22.pthread:
+	gcc -std=c17 ./22.pthread.c -o build/22.pthread -lpthread -g && ./build/22.pthread
